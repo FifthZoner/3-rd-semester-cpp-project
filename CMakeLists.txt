@@ -7,6 +7,9 @@ enable_testing()
 file (GLOB_RECURSE project_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 file (GLOB_RECURSE project_HEADERS CONFIGURE_DEPENDS "src/*.hpp")
 
+file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/data/)
+
+
 set (project_INCLUDE_DIRS "")
 foreach (_headerFile ${project_HEADERS})
     get_filename_component(_dir ${_headerFile} PATH)

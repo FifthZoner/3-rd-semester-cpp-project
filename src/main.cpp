@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "logic/logicLoop.hpp"
-#include "graphics/graphicsLoop.hpp"
+#include "graphics/graphics.hpp"
 #include "misc/settings.hpp"
 #include "misc/misc.hpp"
 
@@ -17,11 +17,12 @@ int main(int, char**){
         std::cout << "Settings were not loaded successfully! Please check the settings file for issues.\n";
     }
 
-    std::queue<sf::Event> events;
-
-    std::thread logicThread = std::thread(logicLoop, &events);
+    std::thread logicThread = std::thread(logicLoop, PrepareGraphics());
 
     // graphics loop
+    while (setting::IsRunning()){
+        Render();
+    }
 
     logicThread.join();
 
