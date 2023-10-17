@@ -23,6 +23,8 @@ target_link_libraries(out PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_features(out PRIVATE cxx_std_17)
 target_include_directories(out PRIVATE ${project_INCLUDE_DIRS})
 
+FILE(COPY data DESTINATION "${CMAKE_BINARY_DIR}")
+
 
 install(TARGETS out)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

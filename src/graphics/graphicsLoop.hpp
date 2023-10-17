@@ -1,0 +1,4 @@
+#ifndef GRAPHICS_LOOP_HPP
+#define GRAPHICS_LOOP_HPP
+
+#endif
