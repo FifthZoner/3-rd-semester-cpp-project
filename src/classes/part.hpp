@@ -19,14 +19,18 @@ struct MountPoints{
     };
 };
 
+// this class defines a part, can be used for structural parts
 class ShipPart {
 protected:
     MountPoints mountPoints;
     std::string name;
+    sf::Rect textureRect;
+    uint32_t weight, health;
 
 public:
 
-    virtual void draw(sf::RenderWindow& window);
+    // creates a part from definition
+    virtual void create(std::string path);
 
     ShipPart();
 

@@ -27,7 +27,6 @@ namespace setting{
         while (!file.eof()){
             std::string input;
             std::getline(file, input);
-            std::cout << "Got next one...\n";
 
             if (input.length() > 0 and input[0] == '#'){
                 continue;
