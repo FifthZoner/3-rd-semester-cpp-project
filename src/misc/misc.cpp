@@ -51,13 +51,18 @@ std::vector<std::string> SplitLine(std::string string){
             start = n + 1;
         }
         else if (string[n] == '\"'){
-            start = n + 1;
+            n++;
+            start = n;
             for (;string[n] != '\"'; n++){}
             vec.push_back(string.substr(start, n - start));
             // adds enough for n to get into the next argument if there's any
             n += 2;
             start = n;
         }
+    }
+
+    if (string[string.length() - 1] != ' ' and quotes == 0){
+        vec.push_back(string.substr(start, string.length() - start));
     }
 
     return vec;
@@ -85,4 +90,6 @@ std::vector<std::vector<std::string>> ParseTextFile(std::string path){
             vec.push_back(temp);
         }
     }
+
+    return vec;
 }

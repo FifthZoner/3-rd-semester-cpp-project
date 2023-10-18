@@ -23,6 +23,9 @@ namespace setting{
     uint16_t Framerate();
     void Framerate(uint16_t value);
 
+    sf::Color EditorBackgroundColor();
+    void EditorBackgroundColor(sf::Color value);
+
 }
 
 #endif

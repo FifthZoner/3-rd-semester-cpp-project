@@ -4,15 +4,9 @@
 #include <SFML/Graphics.hpp>
 
 class GameData{
-protected:
+public:
     static sf::RenderTexture texture;
     static sf::Font font;
-
-    // friends
-
-    // font loading function
-
-    // texture creating function
 };
 
 #endif

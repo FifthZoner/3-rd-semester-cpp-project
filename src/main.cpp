@@ -5,6 +5,7 @@
 #include "graphics/graphics.hpp"
 #include "misc/settings.hpp"
 #include "misc/misc.hpp"
+#include "misc/loading.hpp"
 
 int main(int, char**){
 
@@ -16,6 +17,8 @@ int main(int, char**){
     if (!setting::LoadSettings("data/settings.cfg")){
         std::cout << "Settings were not loaded successfully! Please check the settings file for issues.\n";
     }
+
+    DataContainer data = LoadGame();
 
     std::thread logicThread = std::thread(logicLoop, PrepareGraphics());
 

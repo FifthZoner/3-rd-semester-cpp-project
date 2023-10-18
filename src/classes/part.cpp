@@ -20,7 +20,7 @@ void MountPoints::setPoint(uint8_t side, uint8_t point){
     }
  }
 
-uint8_t MountPoints::getPoint(uint8_t side, uint8_t point){
+uint8_t MountPoints::getPoint(uint8_t side){
     switch (side){
         case front:
             return frontPoint;
@@ -81,7 +81,7 @@ void ShipPart::create(std::string path){
     texturePath = "N/A";
 
     for (auto next : content){
-        if (content.size() == 2){
+        if (next.size() == 2){
             if (next[0] == "name"){
                 name = next[1];
             }
@@ -111,6 +111,7 @@ void ShipPart::create(std::string path){
             }
         }
     }
+
 
     // texture thing here
     // something(&textureRect, texturePath);

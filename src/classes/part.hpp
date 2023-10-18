@@ -31,7 +31,7 @@ public:
     void setPoint(uint8_t side, uint8_t point);
 
    // pass the side as a number with 0 as front clockwise, if adding do a modulo
-   uint8_t getPoint(uint8_t side, uint8_t point);
+   uint8_t getPoint(uint8_t side);
 
    MountPoints();
 
