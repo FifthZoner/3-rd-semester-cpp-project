@@ -23,7 +23,7 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 add_executable(out ${project_SOURCES})
 target_link_libraries(out PRIVATE sfml-graphics sfml-window sfml-system)
-target_compile_features(out PRIVATE cxx_std_17)
+target_compile_features(out PRIVATE cxx_std_20)
 target_include_directories(out PRIVATE ${project_INCLUDE_DIRS})
 
 FILE(COPY data DESTINATION "${CMAKE_BINARY_DIR}")

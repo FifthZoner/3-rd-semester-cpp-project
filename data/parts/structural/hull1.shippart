@@ -1,0 +1,13 @@
+# This is a middle structural part of the ship
+name "Hull segment 1"
+description "A simple structural segment for giving the vessel a shape"
+# Physical
+weight 5000
+health 10
+# Points: present/none/restricted
+front present
+right present
+back present
+left present
+# Graphics
+texture "data/textures/parts/structural/hull1.png"

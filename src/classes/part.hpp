@@ -5,27 +5,49 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-struct MountPoints{
-    uint8_t front:2 = none;
-    uint8_t left:2 = none;
-    uint8_t right:2 = none;
-    uint8_t back:2 = none;
+#include "gameData.hpp"
+
+class MountPoints{
+private:
+    uint8_t frontPoint:2;
+    uint8_t leftPoint:2;
+    uint8_t rightPoint:2;
+    uint8_t backPoint:2;
+
+public:
+
+    enum Point{
+        front, right, back, left
+    };
 
     // none - no connection
     // present - can be connected in any way
     // restricted - cannot have anything placed there due to it's output
-    enum type{
-        none, present, restricted
+    enum Type{
+        none, present, restricted, error
     };
+
+    // pass the side as a number with 0 as front clockwise, if adding do a modulo
+    void setPoint(uint8_t side, uint8_t point);
+
+   // pass the side as a number with 0 as front clockwise, if adding do a modulo
+   uint8_t getPoint(uint8_t side, uint8_t point);
+
+   MountPoints();
+
+   MountPoints(uint8_t front, uint8_t right, uint8_t back, uint8_t left);
+
+   ~MountPoints();
 };
 
 // this class defines a part, can be used for structural parts
-class ShipPart {
+class ShipPart : protected GameData {
 protected:
     MountPoints mountPoints;
-    std::string name;
-    sf::Rect textureRect;
+    std::string name, description;
+    sf::IntRect textureRect;
     uint32_t weight, health;
+    std::string texturePath;
 
 public:
 
@@ -33,6 +55,8 @@ public:
     virtual void create(std::string path);
 
     ShipPart();
+
+    ShipPart(std::string path);
 
     ~ShipPart();
 
