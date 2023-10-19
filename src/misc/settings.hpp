@@ -26,6 +26,15 @@ namespace setting{
     sf::Color EditorBackgroundColor();
     void EditorBackgroundColor(sf::Color value);
 
+    sf::Color EditorBorderColor();
+    void EditorBorderColor(sf::Color value);
+
+    sf::Color EditorTextColor();
+    void EditorTextColor(sf::Color value);
+
+    uint8_t EditorTextSize();
+    void EditorTextSize(uint8_t value);
+
 }
 
 #endif

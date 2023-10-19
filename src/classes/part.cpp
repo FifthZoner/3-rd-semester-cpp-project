@@ -1,5 +1,6 @@
 #include "part.hpp"
 #include "../misc/misc.hpp"
+#include "../misc/texturePacker.hpp"
 
 void MountPoints::setPoint(uint8_t side, uint8_t point){
     switch (side){
@@ -112,12 +113,7 @@ void ShipPart::create(std::string path){
         }
     }
 
-
-    // texture thing here
-    // something(&textureRect, texturePath);
-
-    // removing the string to save memory
-    texturePath.clear();
+    AddTextureToPack(texturePath, &textureRect);
 }
 
 ShipPart::ShipPart(){

@@ -95,4 +95,35 @@ namespace setting{
         framerate = value;
     }
 
+    sf::Color editorBackgroundColor = sf::Color(32, 32, 32, 255);
+    sf::Color EditorBackgroundColor(){
+        return editorBackgroundColor;
+    }
+    void EditorBackgroundColor(sf::Color value){
+        editorBackgroundColor = value;
+    }
+
+    sf::Color editorBorderColor = sf::Color(48, 48, 48, 255);
+    sf::Color EditorBorderColor(){
+        return editorBorderColor;
+    }
+    void EditorBorderColor(sf::Color value){
+        editorBorderColor = value;
+    }
+
+    sf::Color editorTextColor = sf::Color(255, 255, 255, 255);
+    sf::Color EditorTextColor(){
+        return editorTextColor;
+    }
+    void EditorTextColor(sf::Color value){
+        editorTextColor = value;
+    }
+
+    uint8_t editorTextSize = 20;
+    uint8_t EditorTextSize(){
+        return editorTextSize;
+    }
+    void EditorTextSize(uint8_t value){
+        editorTextSize = value;
+    }
 }

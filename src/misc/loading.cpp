@@ -3,6 +3,9 @@
 namespace fs = std::filesystem;
 
 #include "loading.hpp"
+#include "gameData.hpp"
+#include "texturePacker.hpp"
+#include "../graphics/elements/editorRender.hpp"
 
 void LoadParts(DataContainer& data){
 
@@ -19,12 +22,15 @@ DataContainer LoadGame(){
 
     DataContainer data;
 
-    GameData graphicsData;
-
-    //graphicsData.font.loadFromFile("data/font/font.ttf");
+    if (!LoadFont("data/font/font.ttf")){
+        // error here or whatever
+    }
 
     LoadParts(data);
 
+    RunTexturePacking();
 
+    RenderEditorPrepare();
+    
     return data;
 }

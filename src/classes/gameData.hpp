@@ -3,10 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-class GameData{
-public:
-    static sf::RenderTexture texture;
-    static sf::Font font;
-};
+sf::Font& GetMainFont();
+
+bool LoadFont(std::string path);
 
 #endif

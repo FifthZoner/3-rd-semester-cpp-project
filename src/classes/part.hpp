@@ -41,7 +41,7 @@ public:
 };
 
 // this class defines a part, can be used for structural parts
-class ShipPart : protected GameData {
+class ShipPart {
 protected:
     MountPoints mountPoints;
     std::string name, description;

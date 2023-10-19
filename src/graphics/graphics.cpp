@@ -1,13 +1,19 @@
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 #include "graphics.hpp"
 #include "../misc/settings.hpp"
 
-uint16_t stage = 0;
 
 sf::RenderWindow window;
 
 std::queue<sf::Event> events;
+
+std::vector <uint16_t> renderVector;
+
+std::vector <uint16_t>& AccessElementVector(){
+    return renderVector;
+}
 
 std::queue<sf::Event>* PrepareGraphics(){
     window.create(sf::VideoMode(setting::Resolution().x, setting::Resolution().y, 32), "Space Game");
@@ -15,6 +21,24 @@ std::queue<sf::Event>* PrepareGraphics(){
     window.setActive(true);
     window.setVerticalSyncEnabled(true);
     return &events;
+}
+
+#include "elements/elements.hpp"
+
+inline void RenderElements(){
+    for (auto current : renderVector){
+        switch (current){
+        case Element::editorMain:
+            // function here
+            break;
+        case Element::editorListStructural:
+            //function here
+            break;
+        default:
+            break;
+        }
+    }
+    RenderEditor(window);
 }
 
 void Render(){
@@ -27,19 +51,14 @@ void Render(){
         }
         window.close();
         setting::IsRunning(false);
+
+        
     }
     
 
     window.clear();
 
+    RenderElements();
 
     window.display();
-}
-
-void SetStage(uint16_t value){
-    stage = value;
-}
-
-uint16_t GetStage(){
-    return stage;
 }
