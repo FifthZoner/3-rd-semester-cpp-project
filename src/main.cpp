@@ -26,7 +26,7 @@ int main(int, char**){
     while (setting::IsRunning()){
         Render();
     }
-
+    
     logicThread.join();
 
     return 0;

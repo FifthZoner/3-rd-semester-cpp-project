@@ -29,6 +29,8 @@ void HideConsole(){
 
 #endif
 
+#include <iostream>
+
 std::vector<std::string> SplitLine(std::string string){
     std::vector<std::string> vec;
 
@@ -49,8 +51,10 @@ std::vector<std::string> SplitLine(std::string string){
         if (string[n] == ' ' and n != 0){
             vec.push_back(string.substr(start, n - start));
             start = n + 1;
+            std::cout << string << " " << n << "\n";
         }
         else if (string[n] == '\"'){
+            
             n++;
             start = n;
             for (;string[n] != '\"'; n++){}
@@ -69,7 +73,7 @@ std::vector<std::string> SplitLine(std::string string){
 }
 
 std::vector<std::vector<std::string>> ParseTextFile(std::string path){
-    std::vector<std::vector<std::string>> vec;
+    std::vector <std::vector <std::string> > vec;
     std::ifstream file;
     file.open(path);
 
@@ -89,6 +93,30 @@ std::vector<std::vector<std::string>> ParseTextFile(std::string path){
         if (temp.size() > 0){
             vec.push_back(temp);
         }
+        
+    }
+
+    return vec;
+}
+
+std::vector<std::string> ParseTextFileWholeLines(std::string path){
+    std::vector <std::string> vec;
+    std::ifstream file;
+    file.open(path);
+
+    if (!file.is_open()){
+        return vec;
+    }
+
+    while (!file.eof()){
+        std::string input;
+        std::getline(file, input);
+
+        if (input.length() > 0 and input[0] == '#'){
+            continue;
+        }
+
+        vec.push_back(input);
     }
 
     return vec;

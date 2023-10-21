@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <cstdlib>
 
 #include "graphics.hpp"
 #include "../misc/settings.hpp"
-
+#include "../misc/misc.hpp"
 
 sf::RenderWindow window;
 
@@ -11,12 +12,21 @@ std::queue<sf::Event> events;
 
 std::vector <uint16_t> renderVector;
 
-std::vector <uint16_t>& AccessElementVector(){
-    return renderVector;
+std::string GetWindowName(){
+    auto vec = ParseTextFileWholeLines("data/other/windownames.list");
+    if (vec.size() == 0){
+        return "I'm a generic name!";
+    }
+    else {
+        srand(time(NULL));
+        return vec[rand() % vec.size()];
+    }
 }
 
 std::queue<sf::Event>* PrepareGraphics(){
-    window.create(sf::VideoMode(setting::Resolution().x, setting::Resolution().y, 32), "Space Game");
+
+    std::string name = GetWindowName();
+    window.create(sf::VideoMode(setting::Resolution().x, setting::Resolution().y, 32), name);
     window.setFramerateLimit(setting::Framerate());
     window.setActive(true);
     window.setVerticalSyncEnabled(true);
@@ -29,16 +39,15 @@ inline void RenderElements(){
     for (auto current : renderVector){
         switch (current){
         case Element::editorMain:
-            // function here
+            RenderEditorMain(window);
             break;
         case Element::editorListStructural:
-            //function here
+            RenderEditorListStructural(window);
             break;
         default:
             break;
         }
     }
-    RenderEditor(window);
 }
 
 void Render(){
@@ -50,9 +59,7 @@ void Render(){
             continue;
         }
         window.close();
-        setting::IsRunning(false);
-
-        
+        setting::IsRunning(false);        
     }
     
 

@@ -14,4 +14,6 @@ void HideConsole();
 // returns an empty vector if it fails to open
 std::vector<std::vector<std::string>> ParseTextFile(std::string path);
 
+std::vector<std::string> ParseTextFileWholeLines(std::string path);
+
 #endif
