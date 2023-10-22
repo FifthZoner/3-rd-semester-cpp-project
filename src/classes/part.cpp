@@ -76,7 +76,7 @@ void ShipPart::create(std::string path){
     // just to be safe in case of errors
     name = "N/A";
     description = "N/A";
-    textureRect = sf::IntRect();
+    textureRect = new sf::IntRect();
     weight = 0;
     health = 0;
     texturePath = "N/A";
@@ -113,13 +113,13 @@ void ShipPart::create(std::string path){
         }
     }
 
-    AddTextureToPack(texturePath, &textureRect);
+    AddTextureToPack(texturePath, textureRect);
 }
 
 ShipPart::ShipPart(){
     name = "N/A";
     description = "N/A";
-    textureRect = sf::IntRect();
+    textureRect = nullptr;
     weight = 0;
     health = 0;
 }
@@ -128,6 +128,4 @@ ShipPart::ShipPart(std::string path){
     create(path);
 }
 
-ShipPart::~ShipPart(){
-
-}
+ShipPart::~ShipPart(){}

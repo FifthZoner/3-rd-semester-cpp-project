@@ -3,8 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "texturable.hpp"
+
 // empty
-struct Content {
+class Content {
+public:
 
     virtual void draw(sf::RenderWindow& window);
 
@@ -13,9 +16,12 @@ struct Content {
     Content();
 };
 
-struct ContentText : public Content {
+class ContentText : public Content {
+private:
 
     sf::Text text;
+
+public:
 
     void draw(sf::RenderWindow& window);
 
@@ -25,14 +31,26 @@ struct ContentText : public Content {
     void setPosition(float x, float y);
 };
 
-// not to be implemented as of now
-struct ContentImage : public Content {
+// load a standalone texture or copy it from another Texturable object
+class ContentImage : public Content, public Texturable {
+private:
+
+    sf::Sprite sprite;
+    sf::Vector2f size;
+
+    void loadTextureStandalone(std::string path);
+
+public:
 
     void draw(sf::RenderWindow& window);
 
-    ContentImage();
+    ContentImage(sf::Vector2f size, sf::Vector2f position, Texturable* donor);
+
+    ContentImage(sf::Vector2f size, sf::Vector2f position, std::string path);
 
     void setPosition(float x, float y);
+
+    void setTexture();
 };
 
 // a basic shape for drawing, base for more advanced objects
@@ -50,6 +68,12 @@ public:
     virtual void create(sf::Vector2f size, sf::Vector2f position, sf::Color backgroundColor, 
         sf::Color borderColor, uint8_t borderWidth, 
         sf::Font& font, std::string text, sf::Color textColor, uint8_t textSize);
+
+    virtual void create(sf::Vector2f size, sf::Vector2f position, sf::Color backgroundColor, 
+        sf::Color borderColor, uint8_t borderWidth, sf::Vector2f imageSize, sf::Vector2f imageOffset, std::string path);
+
+    virtual void create(sf::Vector2f size, sf::Vector2f position, sf::Color backgroundColor, 
+        sf::Color borderColor, uint8_t borderWidth, sf::Vector2f imageSize, sf::Vector2f imageOffset, Texturable* textureDonor);
 
     virtual void draw(sf::RenderWindow& window);
 

@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "gameData.hpp"
+#include "../graphics/classes/simple/texturable.hpp"
 
 class MountPoints{
 private:
@@ -41,13 +42,11 @@ public:
 };
 
 // this class defines a part, can be used for structural parts
-class ShipPart {
+class ShipPart : public Texturable {
 protected:
     MountPoints mountPoints;
     std::string name, description;
-    sf::IntRect textureRect;
     uint32_t weight, health;
-    std::string texturePath;
 
 public:
 

@@ -2,29 +2,27 @@
 #include <SFML/Graphics.hpp>
 
 #include "texturePacker.hpp"
+#include "../graphics/classes/simple/texturable.hpp"
 
 
 sf::RenderTexture mainTexture;
 
-
-struct PackerStruct{
-
-    std::string path;
-    sf::IntRect* rect;
-    sf::Texture texture;
-    sf::Sprite sprite;
-
-    PackerStruct(std::string path, sf::IntRect* rect){
+PackerStruct::PackerStruct(std::string path, sf::IntRect* rect){
         this->rect = rect;
         this->path = path;
-    }
-
-};
+}
 
 std::vector <PackerStruct> packingList;
+std::vector <Texturable> affectedTexturables;
 
 void AddTextureToPack(std::string path, sf::IntRect* rect){
     packingList.push_back(PackerStruct(path, rect));
+}
+
+void SetTextures(){
+    for (auto& index : affectedTexturables){
+        index.setTexture();
+    }
 }
 
 #include <iostream>
@@ -54,6 +52,11 @@ void RunTexturePacking(){
     }
 
     mainTexture.display();
+
+    SetTextures();
+
+    packingList.clear();
+    affectedTexturables.clear();
 }
 
 const sf::Texture& GetMainTexture(){
