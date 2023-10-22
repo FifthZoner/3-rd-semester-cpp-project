@@ -6,6 +6,20 @@
 #include <SFML/Graphics.hpp>
 #include <cstdint>
 
+struct UIStyle {
+    sf::Color backgroundColor;
+    sf::Color borderColor;
+    sf::Color textColor;
+    sf::Color clickedColor;
+
+    uint8_t textSize;
+    uint8_t borderWidth;
+
+    sf::Font* font;
+
+    UIStyle();
+};
+
 namespace setting{
 
     // returns true if successful, false otherwise
@@ -34,6 +48,8 @@ namespace setting{
 
     uint8_t EditorTextSize();
     void EditorTextSize(uint8_t value);
+
+    UIStyle& UIStyle();
 
 }
 

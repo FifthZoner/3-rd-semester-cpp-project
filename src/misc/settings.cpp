@@ -5,6 +5,18 @@
 #include "settings.hpp"
 #include "misc.hpp"
 
+UIStyle::UIStyle(){
+
+    backgroundColor = sf::Color(32, 32, 32, 192);
+    borderColor = sf::Color(48, 48, 48, 192);
+    textColor = sf::Color(255, 255, 255, 255);
+    clickedColor = sf::Color(40, 40, 40, 192);
+
+    textSize = 20;
+    borderWidth = 6;
+
+    font = nullptr;
+}
 
 namespace setting{
 
@@ -125,5 +137,10 @@ namespace setting{
     }
     void EditorTextSize(uint8_t value){
         editorTextSize = value;
+    }
+
+    UIStyle uiStyle = UIStyle();
+    UIStyle& UIStyle(){
+        return uiStyle;
     }
 }
