@@ -13,7 +13,7 @@ protected:
 public:
 
     // this function changes the color, returns the bool AND handles the effect function
-    bool checkClick(sf::Vector2i position);
+    bool checkClick(const sf::Vector2i& position);
 
     virtual void create(sf::Vector2f size, sf::Vector2f position, sf::Color backgroundColor, sf::Color borderColor,
     uint8_t borderWidth, sf::Color clickedBackgroundColor);

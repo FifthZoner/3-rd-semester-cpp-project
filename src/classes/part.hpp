@@ -53,6 +53,8 @@ public:
     // creates a part from definition
     virtual void create(std::string path);
 
+    const sf::IntRect* getRectPointer() const;
+
     ShipPart();
 
     ShipPart(std::string path);

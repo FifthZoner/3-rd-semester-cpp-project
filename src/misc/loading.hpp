@@ -7,7 +7,7 @@
 
 struct DataContainer{
 
-    std::vector <ShipPart> structurals;
+    std::vector <ShipPart*> structurals;
 
 
 };

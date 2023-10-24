@@ -67,7 +67,7 @@ Button::~Button(){
 }
 
 // pass a window relative position
-bool Button::checkClick(sf::Vector2i position){
+bool Button::checkClick(const sf::Vector2i& position){
     
     if (!isClicked){
         if (position.x < frame.getGlobalBounds().left){

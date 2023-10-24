@@ -8,7 +8,17 @@
 
 class ScrollListElement : public Texturable {
 private:
-    Frame frame;
+
+    // intended layout as of now
+    //
+    //      iiii    ttt
+    //      iiii    ttt
+    //      iiii    ttt
+    //
+    // with more info when hovered over
+
+    Frame imageFrame, textFrame;
+    Texturable* element;
 public:
 
     void create();
@@ -21,7 +31,8 @@ public:
 class ScrollList {
 protected:
     SliderButton scroll;
-    std::vector <ScrollListElement> elements;
+    std::vector <std::vector <ScrollListElement>> elements;
+    sf::RenderTexture area;
 public:
 };
 

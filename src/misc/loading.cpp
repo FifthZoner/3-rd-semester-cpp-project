@@ -11,7 +11,7 @@ void LoadParts(DataContainer& data){
 
     // structurals
     for (auto& entry : fs::directory_iterator("data/parts/structural/")){
-        data.structurals.push_back(ShipPart(entry.path().string()));
+        data.structurals.push_back(new ShipPart(entry.path().string()));
     }
 
 

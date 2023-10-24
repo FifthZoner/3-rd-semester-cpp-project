@@ -11,7 +11,6 @@ class Texturable {
 protected:
     // rect is a pointer to allow for using the same texture on many objects
     sf::IntRect* textureRect;
-    bool isOriginalOwner; // of pointer
     
 public:
 
@@ -20,6 +19,9 @@ public:
 
     // this will do anyting only in classes with texturable sfml objects, so in parts it will be skipped
     virtual void setTexture();
+
+    // Seriously do not use this in base class
+    void loadTextureStandalone(const std::string& path);
 
     Texturable();
 

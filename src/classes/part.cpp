@@ -129,3 +129,7 @@ ShipPart::ShipPart(std::string path){
 }
 
 ShipPart::~ShipPart(){}
+
+const sf::IntRect* ShipPart::getRectPointer() const{
+    return textureRect;
+}

@@ -7,7 +7,6 @@ extern std::vector <Texturable*> affectedTexturables;
 void Texturable::copyRect(Texturable* target){
     target->textureRect = textureRect;
     affectedTexturables.push_back(target);
-    isOriginalOwner = false;
 }
 
 void Texturable::setTexture(){
@@ -16,8 +15,13 @@ void Texturable::setTexture(){
 
 Texturable::Texturable(){
     textureRect = nullptr;
-    isOriginalOwner = false;
 }
 
 Texturable::~Texturable(){ 
+}
+
+void Texturable::loadTextureStandalone(const std::string& path){
+    textureRect = new sf::IntRect;
+    AddTextureToPack(path, textureRect);
+    affectedTexturables.push_back(this);
 }
