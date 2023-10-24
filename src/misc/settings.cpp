@@ -4,7 +4,6 @@
 
 #include "settings.hpp"
 #include "misc.hpp"
-
 UIStyle::UIStyle(){
 
     backgroundColor = sf::Color(32, 32, 32, 192);
@@ -17,6 +16,7 @@ UIStyle::UIStyle(){
 
     font = nullptr;
 }
+
 
 namespace setting{
 
@@ -140,7 +140,7 @@ namespace setting{
     }
 
     UIStyle uiStyle = UIStyle();
-    UIStyle& UIStyle(){
+    UIStyle& GetUIStyle(){
         return uiStyle;
     }
 }

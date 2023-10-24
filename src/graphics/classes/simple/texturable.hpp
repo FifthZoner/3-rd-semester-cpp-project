@@ -11,7 +11,7 @@ class Texturable {
 protected:
     // rect is a pointer to allow for using the same texture on many objects
     sf::IntRect* textureRect;
-    std::string texturePath;
+    bool isOriginalOwner; // of pointer
     
 public:
 

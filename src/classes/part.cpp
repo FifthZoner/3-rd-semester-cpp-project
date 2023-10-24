@@ -79,7 +79,7 @@ void ShipPart::create(std::string path){
     textureRect = new sf::IntRect();
     weight = 0;
     health = 0;
-    texturePath = "N/A";
+    std::string texturePath = "N/A";
 
     for (auto next : content){
         if (next.size() == 2){

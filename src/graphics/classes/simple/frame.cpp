@@ -49,6 +49,7 @@ void ContentImage::loadTextureStandalone(std::string path){
     textureRect = new sf::IntRect;
     AddTextureToPack(path, textureRect);
     affectedTexturables.push_back(this);
+    isOriginalOwner = true;
 }
 
 void ContentImage::setPosition(float x, float y){

@@ -49,7 +49,7 @@ namespace setting{
     uint8_t EditorTextSize();
     void EditorTextSize(uint8_t value);
 
-    UIStyle& UIStyle();
+    UIStyle& GetUIStyle();
 
 }
 
