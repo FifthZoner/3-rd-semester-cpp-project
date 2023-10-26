@@ -116,6 +116,19 @@ void ShipPart::create(std::string path){
     AddTextureToPack(texturePath, textureRect);
 }
 
+std::string ShipPart::getName(){
+    return name;
+}
+std::string ShipPart::getDesc(){
+    return description;
+}
+uint32_t ShipPart::getWeight(){
+    return weight;
+}
+uint32_t ShipPart::getHealth(){
+    return health;
+}
+
 ShipPart::ShipPart(){
     name = "N/A";
     description = "N/A";

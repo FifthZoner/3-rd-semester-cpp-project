@@ -5,6 +5,8 @@
 #include "../graphics/classes/graphicsLib.hpp"
 #include "../graphics/graphics.hpp"
 
+#define TICKRATE 60.0
+
 extern sf::RenderWindow window;
 extern Button buttonEditorPervious, buttonEditorNext;
 extern std::vector<uint16_t> renderVector;
@@ -14,9 +16,16 @@ void logicLoop(std::queue<sf::Event>* events){
     renderVector.push_back(Element::editorMain);
     renderVector.push_back(Element::editorListStructural);
 
+    double tickTime = 1000000 / TICKRATE;
+    sf::Clock tickClock;
+
 
     while(setting::IsRunning()){
 
+        if (tickClock.getElapsedTime().asMicroseconds() < tickTime){
+            sf::sleep(sf::microseconds(10));
+            continue;
+        }
         // handling events
         while (!events->empty()){
 

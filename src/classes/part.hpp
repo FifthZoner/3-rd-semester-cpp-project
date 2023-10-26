@@ -55,6 +55,11 @@ public:
 
     const sf::IntRect* getRectPointer() const;
 
+    std::string getName();
+    std::string getDesc();
+    uint32_t getWeight();
+    uint32_t getHealth();
+
     ShipPart();
 
     ShipPart(std::string path);

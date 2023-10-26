@@ -10,7 +10,8 @@
 class Content {
 public:
 
-    virtual void draw(sf::RenderWindow& window);
+    virtual void draw(sf::RenderWindow& target);
+    virtual void draw(sf::RenderTexture& target);
 
     virtual void setPosition(float x, float y);
 
@@ -24,7 +25,8 @@ protected:
 
 public:
 
-    virtual void draw(sf::RenderWindow& window);
+    virtual void draw(sf::RenderWindow& target);
+    virtual void draw(sf::RenderTexture& target);
 
     // for now no alignment options, pass the position in the middle of the button
     ContentText(sf::Font& font, std::string text, sf::Color textColor, uint8_t textSize, sf::Vector2f position);
@@ -43,7 +45,8 @@ protected:
 
 public:
 
-    virtual void draw(sf::RenderWindow& window);
+    virtual void draw(sf::RenderWindow& target);
+    virtual void draw(sf::RenderTexture& target);
 
     ContentImage(sf::Vector2f size, sf::Vector2f position, Texturable* donor);
 
@@ -61,7 +64,8 @@ class ContentBoth : public ContentText, public ContentImage {
     sf::Vector2f textOffset;
 
 public:
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& target);
+    void draw(sf::RenderTexture& target);
 
     ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, Texturable* donor, UIStyle& style, std::string& text);
 
@@ -95,13 +99,14 @@ public:
     virtual void create(sf::Vector2f size, sf::Vector2f position, sf::Color backgroundColor, 
         sf::Color borderColor, uint8_t borderWidth, sf::Vector2f imageSize, sf::Vector2f imageOffset, Texturable* textureDonor);
 
-    virtual void create(sf::Vector2f& size, sf::Vector2f& position, sf::Vector2f& TextOffset, std::string& text, 
-        UIStyle& style, sf::Vector2f& imageSize, sf::Vector2f& imageOffset, std::string& path);
+    virtual void create(sf::Vector2f size, sf::Vector2f position, sf::Vector2f TextOffset, std::string text, 
+        UIStyle& style, sf::Vector2f imageSize, sf::Vector2f imageOffset, std::string path);
 
-    virtual void create(sf::Vector2f& size, sf::Vector2f& position, sf::Vector2f& TextOffset, std::string& text,
-        UIStyle& style, sf::Vector2f& imageSize, sf::Vector2f& imageOffset, Texturable* textureDonor);
+    virtual void create(sf::Vector2f size, sf::Vector2f position, sf::Vector2f TextOffset, std::string text,
+        UIStyle& style, sf::Vector2f imageSize, sf::Vector2f imageOffset, Texturable* textureDonor);
 
-    virtual void draw(sf::RenderWindow& window);
+    virtual void draw(sf::RenderWindow& target);
+    virtual void draw(sf::RenderTexture& target);
 
     Frame();
 

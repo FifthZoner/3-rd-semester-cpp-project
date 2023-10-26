@@ -5,12 +5,16 @@ extern std::vector <Texturable*> affectedTexturables;
 
 Content::Content(){}
 
-void Content::draw(sf::RenderWindow& window){}
+void Content::draw(sf::RenderWindow& target){}
+void Content::draw(sf::RenderTexture& target){}
 
 void Content::setPosition(float x, float y){}
 
-void ContentText::draw(sf::RenderWindow& window){
-    window.draw(text);
+void ContentText::draw(sf::RenderWindow& target){
+    target.draw(text);
+}
+void ContentText::draw(sf::RenderTexture& target){
+    target.draw(text);
 }
 
 ContentText::ContentText(sf::Font& font, std::string text, sf::Color textColor, uint8_t textSize, sf::Vector2f position){
@@ -31,8 +35,11 @@ void ContentText::setPosition(float x, float y){
     text.setPosition(x, y);
 }
 
-void ContentImage::draw(sf::RenderWindow& window){
-    window.draw(sprite);
+void ContentImage::draw(sf::RenderWindow& target){
+    target.draw(sprite);
+}
+void ContentImage::draw(sf::RenderTexture& target){
+    target.draw(sprite);
 }
 
 ContentImage::ContentImage(sf::Vector2f size, sf::Vector2f position, Texturable* donor){
@@ -60,9 +67,13 @@ void ContentImage::setTexture(){
 
 ContentImage::ContentImage(){}
 
-void ContentBoth::draw(sf::RenderWindow& window){
-    window.draw(sprite);
-    window.draw(text);
+void ContentBoth::draw(sf::RenderWindow& target){
+    target.draw(sprite);
+    target.draw(text);
+}
+void ContentBoth::draw(sf::RenderTexture& target){
+    target.draw(sprite);
+    target.draw(text);
 }
 
 ContentBoth::ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, Texturable* donor, UIStyle& style, std::string& text){
@@ -181,19 +192,24 @@ void Frame::create(sf::Vector2f size, sf::Vector2f position, sf::Color backgroun
         content = new ContentImage(imageSize, sf::Vector2f(position.x + (size.x / 2) + imageOffset.x, position.y + (size.y / 2) + imageOffset.y), textureDonor);
     }
 
-void Frame::create(sf::Vector2f& size, sf::Vector2f& position, sf::Vector2f& TextOffset, std::string& text, 
-        UIStyle& style, sf::Vector2f& imageSize, sf::Vector2f& imageOffset, std::string& path){
+void Frame::create(sf::Vector2f size, sf::Vector2f position, sf::Vector2f TextOffset, std::string text, 
+        UIStyle& style, sf::Vector2f imageSize, sf::Vector2f imageOffset, std::string path){
             
 }
 
-void Frame::create(sf::Vector2f& size, sf::Vector2f& position, sf::Vector2f& TextOffset, std::string& text,
-        UIStyle& style, sf::Vector2f& imageSize, sf::Vector2f& imageOffset, Texturable* textureDonor){
+void Frame::create(sf::Vector2f size, sf::Vector2f position, sf::Vector2f TextOffset, std::string text,
+        UIStyle& style, sf::Vector2f imageSize, sf::Vector2f imageOffset, Texturable* textureDonor){
 
 }
 
-void Frame::draw(sf::RenderWindow& window){
-    window.draw(frame);
-    content->draw(window);
+void Frame::draw(sf::RenderWindow& target){
+    target.draw(frame);
+    content->draw(target);
+}
+
+void Frame::draw(sf::RenderTexture& target){
+    target.draw(frame);
+    content->draw(target);
 }
 
 Frame::Frame(){
