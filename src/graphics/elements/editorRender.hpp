@@ -7,6 +7,6 @@ void RenderEditorPrepare();
 
 void RenderEditorMain(sf::RenderWindow& window);
 
-void RenderEditorListStructural(sf::RenderWindow& window);
+void RenderEditorList(sf::RenderWindow& window);
 
 #endif

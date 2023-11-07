@@ -24,6 +24,8 @@ public:
     // also updates the object, this might get moved into rendering for better fluidity but might not be required
     sf::Vector2i getPosition(sf::Vector2i position);
 
+    sf::Vector2f getPart(sf::Vector2i position);
+
     SliderButton();
 
     ~SliderButton();

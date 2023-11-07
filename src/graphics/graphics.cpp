@@ -42,7 +42,7 @@ inline void RenderElements(){
             RenderEditorMain(window);
             break;
         case Element::editorListStructural:
-            RenderEditorListStructural(window);
+            RenderEditorList(window);
             break;
         default:
             break;

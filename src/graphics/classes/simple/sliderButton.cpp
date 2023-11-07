@@ -73,6 +73,11 @@ sf::Vector2i SliderButton::getPosition(sf::Vector2i position){
     return position;
 }
 
+sf::Vector2f SliderButton::getPart(sf::Vector2i position){
+    auto temp = getPosition(position);
+    return sf::Vector2f(float(temp.x) / float(allowed.width), float(temp.y) / float(allowed.height));
+}
+
 SliderButton::SliderButton(){
     content = nullptr;
     frame = sf::ConvexShape();
@@ -83,8 +88,4 @@ SliderButton::SliderButton(){
 }
 
 SliderButton::~SliderButton(){
-    if (content != nullptr){
-        delete content;
-        content = nullptr;
-    }
 }
