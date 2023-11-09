@@ -38,6 +38,7 @@ void ContentText::setPosition(float x, float y){
 void ContentImage::draw(sf::RenderWindow& target){
     target.draw(sprite);
 }
+#include <iostream>
 void ContentImage::draw(sf::RenderTexture& target){
     target.draw(sprite);
 }
@@ -197,9 +198,28 @@ void Frame::create(sf::Vector2f size, sf::Vector2f position, sf::Vector2f TextOf
             
 }
 
-void Frame::create(sf::Vector2f size, sf::Vector2f position, sf::Vector2f TextOffset, std::string text,
-        UIStyle& style, sf::Vector2f imageSize, sf::Vector2f imageOffset, Texturable* textureDonor){
 
+void Frame::create(sf::Vector2f size, sf::Vector2f position, sf::Vector2f TextOffset, std::string text,
+UIStyle& style, sf::Vector2f imageSize, sf::Vector2f imageOffset, Texturable* textureDonor){
+    // rectangle shape
+    frame.setPointCount(4);
+    frame.setPoint(0, sf::Vector2f(style.borderWidth, style.borderWidth));
+    frame.setPoint(1, sf::Vector2f(size.x - style.borderWidth, style.borderWidth));
+    frame.setPoint(2, sf::Vector2f(size.x - style.borderWidth, size.y - style.borderWidth));
+    frame.setPoint(3, sf::Vector2f(style.borderWidth, size.y - style.borderWidth));
+    
+    // other stuff
+    frame.setPosition(position);
+    frame.setFillColor(style.backgroundColor);
+    frame.setOutlineColor(style.borderColor);
+    frame.setOutlineThickness(style.borderWidth);
+
+    //sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, 
+    //std::string path, UIStyle& style, std::string& text
+    
+
+
+    content = new ContentBoth(size, TextOffset, imageOffset, textureDonor, style, text);
 }
 
 void Frame::draw(sf::RenderWindow& target){

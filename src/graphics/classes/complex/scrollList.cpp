@@ -21,6 +21,8 @@ Texturable* ScrollListElement::getTexturable(){
     return element;
 }
 
+#include <iostream>
+
 void ScrollList::create(std::vector <std::vector <ShipPart*>>& parts, UIStyle& style, 
 sf::Vector2f size, sf::Vector2f position, sf::Vector2f scrollSize, sf::Vector2f tileSize){
 
@@ -34,7 +36,7 @@ sf::Vector2f size, sf::Vector2f position, sf::Vector2f scrollSize, sf::Vector2f 
     // slider
     
     scroll.create(scrollSize, 
-    sf::Vector2f(position.x + size.x - (scrollSize.x / 2), position.y + (scrollSize.y / 2)), 
+    sf::Vector2f(position.x + size.x - scrollSize.x, position.y), 
     style.backgroundColor, style.borderColor, style.borderWidth, style.clickedColor,  
     sf::FloatRect(position.x + size.x - (scrollSize.x / 2), position.y + (scrollSize.y / 2), 
     0, size.y - scrollSize.y));
@@ -81,17 +83,17 @@ void ScrollList::draw(sf::RenderWindow& target){
     // elements here
     sf::Vector2i renderBounds = sf::Vector2i(offset / tileHeight, offset / tileHeight + amountToRender);
     if (renderBounds.y > elements[currentList].size()){
-        renderBounds.x -= elements[currentList].size() - renderBounds.y;
+        renderBounds.x -= renderBounds.y - elements[currentList].size();
         renderBounds.y = elements[currentList].size();
         if (renderBounds.x < 0){
             renderBounds.x = 0;
         }
     }
 
-    for (uint32_t n = renderBounds.x; n < renderBounds.y; n++){
+    for (int n = renderBounds.x; n < renderBounds.y; n++){
         elements[currentList][n].draw(area);
     }
-
+    
     area.display();
     sprite.setTexture(area.getTexture());
     target.draw(sprite);

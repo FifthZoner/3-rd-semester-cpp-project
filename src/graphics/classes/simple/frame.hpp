@@ -59,9 +59,10 @@ public:
     void setTexture();
 };
 
-class ContentBoth : public ContentText, public ContentImage {
+class ContentBoth : public ContentImage {
 
     sf::Vector2f textOffset;
+    sf::Text text;
 
 public:
     void draw(sf::RenderWindow& target);
