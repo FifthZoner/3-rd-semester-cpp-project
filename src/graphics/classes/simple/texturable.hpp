@@ -25,7 +25,7 @@ public:
 
     Texturable();
 
-    ~Texturable();
+    virtual ~Texturable();
 
 };
 

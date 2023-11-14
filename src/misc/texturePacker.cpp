@@ -13,19 +13,20 @@ PackerStruct::PackerStruct(std::string path, sf::IntRect* rect){
 }
 
 std::vector <PackerStruct> packingList;
-std::vector <Texturable> affectedTexturables;
+std::vector <Texturable*> affectedTexturables;
 
 void AddTextureToPack(std::string path, sf::IntRect* rect){
     packingList.push_back(PackerStruct(path, rect));
 }
 
+#include <iostream>
+
 void SetTextures(){
-    for (auto& index : affectedTexturables){
-        index.setTexture();
+    for (auto index : affectedTexturables){
+        index->setTexture();
     }
 }
 
-#include <iostream>
 
 void RunTexturePacking(){
 
@@ -40,7 +41,6 @@ void RunTexturePacking(){
 
     mainTexture.create(side * 32, side * 32);
     mainTexture.clear(sf::Color(0, 0, 0, 0));
-
     for (uint32_t n = 0; n < packingList.size(); n++){
         if (packingList[n].texture.loadFromFile(packingList[n].path)){
             packingList[n].sprite.setTexture(packingList[n].texture);
@@ -52,7 +52,6 @@ void RunTexturePacking(){
     }
 
     mainTexture.display();
-
     SetTextures();
 
     packingList.clear();

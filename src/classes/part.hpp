@@ -64,7 +64,7 @@ public:
 
     ShipPart(std::string path);
 
-    ~ShipPart();
+    virtual ~ShipPart();
 
 };
 

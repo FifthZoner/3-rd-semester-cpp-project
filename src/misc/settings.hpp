@@ -13,6 +13,7 @@ struct UIStyle {
     sf::Color clickedColor;
 
     uint8_t textSize;
+    uint8_t descSize;
     uint8_t borderWidth;
 
     sf::Font* font;
@@ -50,6 +51,7 @@ namespace setting{
     void EditorTextSize(uint8_t value);
 
     UIStyle& GetUIStyle();
+    void SetUIFont(sf::Font* font);
 
 }
 

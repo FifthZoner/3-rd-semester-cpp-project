@@ -5,6 +5,8 @@ extern std::vector <Texturable*> affectedTexturables;
 
 Content::Content(){}
 
+Content::~Content(){}
+
 void Content::draw(sf::RenderWindow& target){}
 void Content::draw(sf::RenderTexture& target){}
 
@@ -38,7 +40,7 @@ void ContentText::setPosition(float x, float y){
 void ContentImage::draw(sf::RenderWindow& target){
     target.draw(sprite);
 }
-#include <iostream>
+
 void ContentImage::draw(sf::RenderTexture& target){
     target.draw(sprite);
 }
@@ -62,47 +64,51 @@ void ContentImage::setPosition(float x, float y){
 void ContentImage::setTexture(){
     sprite.setTexture(GetMainTexture());
     sprite.setTextureRect(*textureRect);
-    sprite.setScale(size.x / float(textureRect->width), size.y / float(textureRect->height));
+    //sprite.setScale(size.x / float(textureRect->width), size.y / float(textureRect->height));
     sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
 }
 
 ContentImage::ContentImage(){}
 
+ContentImage::~ContentImage(){}
+
 void ContentBoth::draw(sf::RenderWindow& target){
     target.draw(sprite);
     target.draw(text);
 }
+
 void ContentBoth::draw(sf::RenderTexture& target){
     target.draw(sprite);
     target.draw(text);
+
 }
 
-ContentBoth::ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, Texturable* donor, UIStyle& style, std::string& text){
+ContentBoth::ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, Texturable* donor, UIStyle& style, std::string& text, sf::Vector2f position){
     this->size = size;
-    sprite.setPosition(imagePosition);
+    sprite.setPosition(imagePosition + position);
     donor->copyRect(this);
 
     this->text.setFont(*style.font);
     this->text.setString(text);
     this->text.setFillColor(style.textColor);
-    this->text.setCharacterSize(style.textSize);
-    this->text.setPosition(textPosition);
+    this->text.setCharacterSize(style.descSize);
+    this->text.setPosition(textPosition + position);
 
     // centering here
     this->text.setOrigin(this->text.getLocalBounds().width / 2 + this->text.getLocalBounds().left, 
     this->text.getLocalBounds().top + this->text.getLocalBounds().height / 2);
 }
 
-ContentBoth::ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, std::string path, UIStyle& style, std::string& text){
+ContentBoth::ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, std::string path, UIStyle& style, std::string& text, sf::Vector2f position){
     this->size = size;
-    sprite.setPosition(imagePosition);
+    sprite.setPosition(imagePosition + position);
     loadTextureStandalone(path);
 
     this->text.setFont(*style.font);
     this->text.setString(text);
     this->text.setFillColor(style.textColor);
-    this->text.setCharacterSize(style.textSize);
-    this->text.setPosition(textPosition);
+    this->text.setCharacterSize(style.descSize);
+    this->text.setPosition(textPosition + position);
 
     // centering here
     this->text.setOrigin(this->text.getLocalBounds().width / 2 + this->text.getLocalBounds().left, 
@@ -110,6 +116,8 @@ ContentBoth::ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vec
 }
 
 ContentBoth::ContentBoth(){}
+
+ContentBoth::~ContentBoth(){}
 
 void ContentBoth::setPosition(float x, float y){
     sprite.setPosition(x, y);
@@ -213,13 +221,8 @@ UIStyle& style, sf::Vector2f imageSize, sf::Vector2f imageOffset, Texturable* te
     frame.setFillColor(style.backgroundColor);
     frame.setOutlineColor(style.borderColor);
     frame.setOutlineThickness(style.borderWidth);
-
-    //sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, 
-    //std::string path, UIStyle& style, std::string& text
     
-
-
-    content = new ContentBoth(size, TextOffset, imageOffset, textureDonor, style, text);
+    content = new ContentBoth(size, TextOffset, imageOffset, textureDonor, style, text, position);
 }
 
 void Frame::draw(sf::RenderWindow& target){
@@ -237,9 +240,4 @@ Frame::Frame(){
     frame = sf::ConvexShape();
 }
 
-Frame::~Frame(){
-    if (content != nullptr){
-        delete content;
-        content = nullptr;
-    }
-}
+Frame::~Frame(){}

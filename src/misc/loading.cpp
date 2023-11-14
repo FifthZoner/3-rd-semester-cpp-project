@@ -6,6 +6,7 @@ namespace fs = std::filesystem;
 #include "gameData.hpp"
 #include "texturePacker.hpp"
 #include "../graphics/elements/editorRender.hpp"
+#include "settings.hpp"
 
 std::vector <std::vector <ShipPart*>> shipParts;
 
@@ -30,11 +31,14 @@ DataContainer LoadGame(){
         // error here or whatever
     }
 
+    setting::SetUIFont(&GetMainFont());
+
     LoadParts(data);
 
-    RunTexturePacking();
-
     RenderEditorPrepare();
+
+    // packer must be after ALL texture loading, remember that in the future please - myself
+    RunTexturePacking();
     
     return data;
 }

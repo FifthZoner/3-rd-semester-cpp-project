@@ -31,6 +31,10 @@ public:
     void draw(sf::RenderTexture& target);
 
     Texturable* getTexturable();
+
+    ScrollListElement();
+
+    ~ScrollListElement();
 };
 
 // A complex class to define a scrollable list, most notably the elements in the editor
@@ -48,6 +52,12 @@ protected:
     uint16_t amountToRender = 0;
     uint16_t currentList = 0; 
     uint16_t tileHeight = 0;
+    enum clickState{
+        no, list, bar
+    };
+    uint8_t clicked = no;
+    sf::Vector2u clickIndex = sf::Vector2u(0, 0);
+
 public:
     void create(std::vector <std::vector <ShipPart*>>& parts, UIStyle& style, 
         sf::Vector2f size, sf::Vector2f position, sf::Vector2f scrollSize, sf::Vector2f tileSize);
@@ -58,8 +68,12 @@ public:
 
     void perviousList();
 
-    // handles all the clicking on it's own
-    bool isClicked();
+    // handles all the clicking on it's own, pass the global mouse position
+    bool isClicked(sf::Vector2i position);
+
+    ScrollList();
+
+    ~ScrollList();
 
 };
 

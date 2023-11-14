@@ -16,6 +16,8 @@ public:
     virtual void setPosition(float x, float y);
 
     Content();
+
+    virtual ~Content();
 };
 
 class ContentText : public Content {
@@ -53,6 +55,8 @@ public:
     ContentImage(sf::Vector2f size, sf::Vector2f position, std::string path);
 
     ContentImage();
+    
+    virtual ~ContentImage();
 
     virtual void setPosition(float x, float y);
 
@@ -68,11 +72,13 @@ public:
     void draw(sf::RenderWindow& target);
     void draw(sf::RenderTexture& target);
 
-    ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, Texturable* donor, UIStyle& style, std::string& text);
+    ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, Texturable* donor, UIStyle& style, std::string& text, sf::Vector2f position);
 
-    ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, std::string path, UIStyle& style, std::string& text);
+    ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, std::string path, UIStyle& style, std::string& text, sf::Vector2f position);
 
     ContentBoth();
+
+    ~ContentBoth();
 
     // pass image position
     void setPosition(float x, float y);

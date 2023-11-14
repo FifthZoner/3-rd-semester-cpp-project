@@ -4,14 +4,16 @@
 
 #include "settings.hpp"
 #include "misc.hpp"
+
 UIStyle::UIStyle(){
 
-    backgroundColor = sf::Color(32, 32, 32, 192);
-    borderColor = sf::Color(48, 48, 48, 192);
+    backgroundColor = sf::Color(32, 32, 32, 255);
+    borderColor = sf::Color(48, 48, 48, 255);
     textColor = sf::Color(255, 255, 255, 255);
-    clickedColor = sf::Color(40, 40, 40, 192);
+    clickedColor = sf::Color(40, 40, 40, 255);
 
     textSize = 20;
+    descSize = 10;
     borderWidth = 6;
 
     font = nullptr;
@@ -142,5 +144,8 @@ namespace setting{
     UIStyle uiStyle = UIStyle();
     UIStyle& GetUIStyle(){
         return uiStyle;
+    }
+    void SetUIFont(sf::Font* font){
+        uiStyle.font = font;
     }
 }

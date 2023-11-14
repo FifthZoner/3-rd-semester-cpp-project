@@ -5,8 +5,8 @@ void ScrollListElement::create(Texturable* texturable, UIStyle& style,
 
     element = texturable;
 
-    frame.create(size, position, sf::Vector2f(0,0), reinterpret_cast<ShipPart*>(element)->getName(), 
-    style, sf::Vector2f(32, 32), sf::Vector2f(0, 0), element);
+    frame.create(size, position, sf::Vector2f(0.75 * size.x, 0.5 * size.y), reinterpret_cast<ShipPart*>(element)->getName() + "\n<something>", 
+    style, sf::Vector2f(size.x - (style.borderWidth * 2), size.x - (style.borderWidth * 2)), sf::Vector2f(0.25 * size.x, 0.5 * size.y), element);
 }
 
 bool ScrollListElement::isHoveredOver(sf::Vector2i& position){
@@ -21,7 +21,11 @@ Texturable* ScrollListElement::getTexturable(){
     return element;
 }
 
-#include <iostream>
+ScrollListElement::ScrollListElement(){
+}
+
+ScrollListElement::~ScrollListElement(){
+}
 
 void ScrollList::create(std::vector <std::vector <ShipPart*>>& parts, UIStyle& style, 
 sf::Vector2f size, sf::Vector2f position, sf::Vector2f scrollSize, sf::Vector2f tileSize){
@@ -34,7 +38,6 @@ sf::Vector2f size, sf::Vector2f position, sf::Vector2f scrollSize, sf::Vector2f 
     sprite.setPosition(position);
 
     // slider
-    
     scroll.create(scrollSize, 
     sf::Vector2f(position.x + size.x - scrollSize.x, position.y), 
     style.backgroundColor, style.borderColor, style.borderWidth, style.clickedColor,  
@@ -80,6 +83,8 @@ void ScrollList::perviousList(){
 void ScrollList::draw(sf::RenderWindow& target){
     area.clear(sf::Color(0, 0, 0, 0));
 
+    // TODO add slider hold handling here
+
     // elements here
     sf::Vector2i renderBounds = sf::Vector2i(offset / tileHeight, offset / tileHeight + amountToRender);
     if (renderBounds.y > elements[currentList].size()){
@@ -91,7 +96,7 @@ void ScrollList::draw(sf::RenderWindow& target){
     }
 
     for (int n = renderBounds.x; n < renderBounds.y; n++){
-        elements[currentList][n].draw(area);
+       elements[currentList][n].draw(area);
     }
     
     area.display();
@@ -100,9 +105,21 @@ void ScrollList::draw(sf::RenderWindow& target){
     scroll.draw(target);
 }
 
-bool ScrollList::isClicked(){
+bool ScrollList::isClicked(sf::Vector2i position){
 
+    // already clicked handling
+    
 
+    // window
+    
+
+    // scroll thingy
 
     return false;
+}
+
+ScrollList::ScrollList(){
+}
+    
+ScrollList::~ScrollList(){
 }
