@@ -80,15 +80,17 @@ void ScrollList::perviousList(){
     }
 }
 
-void ScrollList::draw(sf::RenderWindow& target){
+void ScrollList::draw(sf::RenderWindow& target, sf::Vector2i mousePosition){
     area.clear(sf::Color(0, 0, 0, 0));
 
-    // TODO add slider hold handling here
+    if (clicked == clickState::bar) {
+        offset = int(area.getSize().y * scroll.getPart(mousePosition).y) - scroll.getOffset().y;
+    }
 
     // elements here
-    sf::Vector2i renderBounds = sf::Vector2i(offset / tileHeight, offset / tileHeight + amountToRender);
+    sf::Vector2i renderBounds = sf::Vector2i(offset / tileHeight - 2, offset / tileHeight + amountToRender);
     if (renderBounds.y > elements[currentList].size()){
-        renderBounds.x -= renderBounds.y - elements[currentList].size();
+        //renderBounds.x -= renderBounds.y - elements[currentList].size();
         renderBounds.y = elements[currentList].size();
         if (renderBounds.x < 0){
             renderBounds.x = 0;
@@ -98,6 +100,8 @@ void ScrollList::draw(sf::RenderWindow& target){
     for (int n = renderBounds.x; n < renderBounds.y; n++){
        elements[currentList][n].draw(area);
     }
+    view.setCenter(view.getCenter().x, offset + (area.getSize().y / 2));
+    area.setView(view);
     
     area.display();
     sprite.setTexture(area.getTexture());
@@ -108,12 +112,28 @@ void ScrollList::draw(sf::RenderWindow& target){
 bool ScrollList::isClicked(sf::Vector2i position){
 
     // already clicked handling
-    
+    if (clicked != clickState::no) {
+        if (clicked == clickState::bar) {
+            // bar is clicked
+            scroll.checkClick(position);
+            clicked = clickState::no;
+            return false;
+        }
+        else {
+            // list element is clicked
+        }
+    }
+    else {
+        // window
 
-    // window
-    
 
-    // scroll thingy
+        // scroll thingy
+        if (scroll.checkClick(position)){
+            clicked = clickState::bar;
+        }
+    }
+
+    
 
     return false;
 }

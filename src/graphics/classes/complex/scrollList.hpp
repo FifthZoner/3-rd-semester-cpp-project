@@ -62,7 +62,7 @@ public:
     void create(std::vector <std::vector <ShipPart*>>& parts, UIStyle& style, 
         sf::Vector2f size, sf::Vector2f position, sf::Vector2f scrollSize, sf::Vector2f tileSize);
 
-    void draw(sf::RenderWindow& target);
+    void draw(sf::RenderWindow& target, sf::Vector2i mousePosition);
 
     void nextList();
 

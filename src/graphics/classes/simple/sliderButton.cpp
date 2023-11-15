@@ -78,6 +78,10 @@ sf::Vector2f SliderButton::getPart(sf::Vector2i position){
     return sf::Vector2f(float(temp.x) / float(allowed.width), float(temp.y) / float(allowed.height));
 }
 
+sf::Vector2f SliderButton::getOffset(){
+    return sf::Vector2f(frame.getLocalBounds().width / 2, frame.getLocalBounds().height / 2);
+}
+
 SliderButton::SliderButton(){
     content = nullptr;
     frame = sf::ConvexShape();

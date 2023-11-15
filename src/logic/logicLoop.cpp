@@ -10,6 +10,7 @@
 extern sf::RenderWindow window;
 extern Button buttonEditorPervious, buttonEditorNext;
 extern std::vector<uint16_t> renderVector;
+extern ScrollList scrollListEditorElements;
 
 void logicLoop(std::queue<sf::Event>* events){
     
@@ -34,10 +35,12 @@ void logicLoop(std::queue<sf::Event>* events){
             case sf::Event::MouseButtonPressed:
                 buttonEditorNext.checkClick(sf::Mouse::getPosition(window));
                 buttonEditorPervious.checkClick(sf::Mouse::getPosition(window));
+                scrollListEditorElements.isClicked(sf::Mouse::getPosition(window));
                 break;
             case sf::Event::MouseButtonReleased:
                 buttonEditorNext.checkClick(sf::Mouse::getPosition(window));
                 buttonEditorPervious.checkClick(sf::Mouse::getPosition(window));
+                scrollListEditorElements.isClicked(sf::Mouse::getPosition(window));
                 break;
             default:
                 break;

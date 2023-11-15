@@ -36,5 +36,5 @@ void RenderEditorList(sf::RenderWindow& window){
     buttonEditorNext.draw(window);
     buttonEditorPervious.draw(window);
     frameEditorStructuralText.draw(window);
-    scrollListEditorElements.draw(window);
+    scrollListEditorElements.draw(window, sf::Mouse::getPosition(window));
 }

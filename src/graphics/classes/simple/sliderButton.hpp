@@ -26,6 +26,8 @@ public:
 
     sf::Vector2f getPart(sf::Vector2i position);
 
+    sf::Vector2f getOffset();
+
     SliderButton();
 
     ~SliderButton();
