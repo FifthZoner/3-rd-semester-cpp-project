@@ -235,6 +235,10 @@ void Frame::draw(sf::RenderTexture& target){
     content->draw(target);
 }
 
+void Frame::setBackground(sf::Color color){
+    frame.setFillColor(color);
+}
+
 Frame::Frame(){
     content = nullptr;
     frame = sf::ConvexShape();

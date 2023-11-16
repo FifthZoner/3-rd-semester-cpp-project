@@ -25,12 +25,13 @@ public:
 
     void create(Texturable* texturable, UIStyle& style, sf::Vector2f position, sf::Vector2f size);
 
-    // checks and prepares the textbox for rendering new things, TODO
-    bool isHoveredOver(sf::Vector2i& position);
-
     void draw(sf::RenderTexture& target);
 
     Texturable* getTexturable();
+
+    void setClicked();
+
+    void setUnclicked();
 
     ScrollListElement();
 
@@ -53,7 +54,7 @@ protected:
     uint16_t currentList = 0; 
     uint16_t tileHeight = 0;
     enum clickState{
-        no, list, bar
+        no, tile, bar
     };
     uint8_t clicked = no;
     sf::Vector2u clickIndex = sf::Vector2u(0, 0);
@@ -70,6 +71,8 @@ public:
 
     // handles all the clicking on it's own, pass the global mouse position
     bool isClicked(sf::Vector2i position);
+
+    Texturable* getLastTileClicked();
 
     ScrollList();
 

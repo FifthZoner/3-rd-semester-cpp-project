@@ -115,6 +115,8 @@ public:
     virtual void draw(sf::RenderWindow& target);
     virtual void draw(sf::RenderTexture& target);
 
+    void setBackground(sf::Color color);
+
     Frame();
 
     ~Frame();

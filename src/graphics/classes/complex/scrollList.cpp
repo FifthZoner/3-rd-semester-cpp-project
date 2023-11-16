@@ -4,13 +4,11 @@ void ScrollListElement::create(Texturable* texturable, UIStyle& style,
     sf::Vector2f position, sf::Vector2f size){
 
     element = texturable;
+    idleColor = style.backgroundColor;
+    clickedColor = style.clickedColor;
 
     frame.create(size, position, sf::Vector2f(0.75 * size.x, 0.5 * size.y), reinterpret_cast<ShipPart*>(element)->getName() + "\n<something>", 
     style, sf::Vector2f(size.x - (style.borderWidth * 2), size.x - (style.borderWidth * 2)), sf::Vector2f(0.25 * size.x, 0.5 * size.y), element);
-}
-
-bool ScrollListElement::isHoveredOver(sf::Vector2i& position){
-    return false;
 }
 
 void ScrollListElement::draw(sf::RenderTexture& target){
@@ -19,6 +17,14 @@ void ScrollListElement::draw(sf::RenderTexture& target){
 
 Texturable* ScrollListElement::getTexturable(){
     return element;
+}
+
+void ScrollListElement::setClicked(){
+    frame.setBackground(clickedColor);
+}
+
+void ScrollListElement::setUnclicked(){
+    frame.setBackground(idleColor);
 }
 
 ScrollListElement::ScrollListElement(){
@@ -80,11 +86,14 @@ void ScrollList::perviousList(){
     }
 }
 
+#include <iostream>
+
 void ScrollList::draw(sf::RenderWindow& target, sf::Vector2i mousePosition){
     area.clear(sf::Color(0, 0, 0, 0));
 
     if (clicked == clickState::bar) {
-        offset = int(area.getSize().y * scroll.getPart(mousePosition).y) - scroll.getOffset().y;
+        offset = (int((elements[currentList].size() > int(area.getSize().y / tileHeight)) ? 
+        elements[currentList].size() - int(area.getSize().y / tileHeight) : 0) * tileHeight * scroll.getPart(mousePosition).y);
     }
 
     // elements here
@@ -111,31 +120,72 @@ void ScrollList::draw(sf::RenderWindow& target, sf::Vector2i mousePosition){
 
 bool ScrollList::isClicked(sf::Vector2i position){
 
+    position -= sf::Vector2i(sprite.getPosition());
+
     // already clicked handling
     if (clicked != clickState::no) {
         if (clicked == clickState::bar) {
             // bar is clicked
-            scroll.checkClick(position);
+            scroll.checkClick(position + sf::Vector2i(sprite.getPosition()));
             clicked = clickState::no;
             return false;
         }
         else {
+            clicked = clickState::no;
+            elements[clickIndex.x][clickIndex.y].setUnclicked();
             // list element is clicked
+            if (position.x >= 0 and position.x <= area.getSize().x
+                and position.y >= 0 and position.y <= area.getSize().y
+                and position.y >= clickIndex.y * tileHeight - offset and position.y <= (clickIndex.y + 1) * tileHeight - offset ){
+                    std::cout << "unclicked true!\n";
+                return true;
+            }
+            std::cout << "unclicked false!\n";
+            return false;
         }
     }
     else {
-        // window
+        // tiles
+        if (position.x >= 0 and position.x <= area.getSize().x
+        and position.y >= 0 and position.y <= area.getSize().y){
+            sf::Vector2i candidates(int(offset / tileHeight), int(offset / tileHeight) + int(area.getSize().y / tileHeight));
+            if (candidates.x < 0){
+                candidates.x = 0;
+            }
+            if (candidates.y >= elements[currentList].size()){
+                candidates.y = elements[currentList].size() - 1;
+            }
+
+            // actual handling here
+            for (uint32_t n = candidates.x; n <= candidates.y; n++){
+                std::cout << n << '\n';
+                if (position.y >= n * tileHeight - offset and position.y <= (n + 1) * tileHeight - offset){
+                    clicked = clickState::tile;
+                    clickIndex.x = currentList;
+                    clickIndex.y = n;
+                    elements[clickIndex.x][clickIndex.y].setClicked();
+                    std::cout << "clicked!\n";
+                    return true;
+                }
+            }
+        }
+        
 
 
         // scroll thingy
-        if (scroll.checkClick(position)){
+        if (scroll.checkClick(position + sf::Vector2i(sprite.getPosition()))){
             clicked = clickState::bar;
+            return true;
         }
     }
 
     
 
     return false;
+}
+
+Texturable* ScrollList::getLastTileClicked(){
+    return elements[clickIndex.x][clickIndex.y].getTexturable();
 }
 
 ScrollList::ScrollList(){

@@ -1,5 +1,6 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #include "texturePacker.hpp"
 #include "../graphics/classes/simple/texturable.hpp"
@@ -19,14 +20,11 @@ void AddTextureToPack(std::string path, sf::IntRect* rect){
     packingList.push_back(PackerStruct(path, rect));
 }
 
-#include <iostream>
-
 void SetTextures(){
     for (auto index : affectedTexturables){
         index->setTexture();
     }
 }
-
 
 void RunTexturePacking(){
 
