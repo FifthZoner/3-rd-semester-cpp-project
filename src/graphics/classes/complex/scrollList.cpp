@@ -86,8 +86,6 @@ void ScrollList::perviousList(){
     }
 }
 
-#include <iostream>
-
 void ScrollList::draw(sf::RenderWindow& target, sf::Vector2i mousePosition){
     area.clear(sf::Color(0, 0, 0, 0));
 
@@ -137,10 +135,8 @@ bool ScrollList::isClicked(sf::Vector2i position){
             if (position.x >= 0 and position.x <= area.getSize().x
                 and position.y >= 0 and position.y <= area.getSize().y
                 and position.y >= clickIndex.y * tileHeight - offset and position.y <= (clickIndex.y + 1) * tileHeight - offset ){
-                    std::cout << "unclicked true!\n";
                 return true;
             }
-            std::cout << "unclicked false!\n";
             return false;
         }
     }
@@ -158,13 +154,11 @@ bool ScrollList::isClicked(sf::Vector2i position){
 
             // actual handling here
             for (uint32_t n = candidates.x; n <= candidates.y; n++){
-                std::cout << n << '\n';
                 if (position.y >= n * tileHeight - offset and position.y <= (n + 1) * tileHeight - offset){
                     clicked = clickState::tile;
                     clickIndex.x = currentList;
                     clickIndex.y = n;
                     elements[clickIndex.x][clickIndex.y].setClicked();
-                    std::cout << "clicked!\n";
                     return true;
                 }
             }
@@ -175,7 +169,7 @@ bool ScrollList::isClicked(sf::Vector2i position){
         // scroll thingy
         if (scroll.checkClick(position + sf::Vector2i(sprite.getPosition()))){
             clicked = clickState::bar;
-            return true;
+            return true; // false to avoid interpreting as if a tile pressed
         }
     }
 

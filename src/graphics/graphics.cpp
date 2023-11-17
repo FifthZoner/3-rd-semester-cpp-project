@@ -23,14 +23,13 @@ std::string GetWindowName(){
     }
 }
 
-std::queue<sf::Event>* PrepareGraphics(){
+void PrepareGraphics(){
 
     std::string name = GetWindowName();
     window.create(sf::VideoMode(setting::Resolution().x, setting::Resolution().y, 32), name);
     window.setFramerateLimit(setting::Framerate());
     window.setActive(true);
     window.setVerticalSyncEnabled(true);
-    return &events;
 }
 
 #include "elements/elements.hpp"

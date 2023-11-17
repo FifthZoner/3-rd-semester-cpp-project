@@ -4,6 +4,6 @@
 #include <SFML/Window.hpp>
 #include <queue>
 
-void logicLoop(std::queue<sf::Event>* events);
+void logicLoop();
 
 #endif

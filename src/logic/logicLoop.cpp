@@ -1,21 +1,27 @@
 #include <mutex>
+#include <vector>
 
 #include "logicLoop.hpp"
+#include "logicStructs.hpp"
+#include "handling.hpp"
 #include "../misc/settings.hpp"
 #include "../graphics/classes/graphicsLib.hpp"
 #include "../graphics/graphics.hpp"
 
 #define TICKRATE 60.0
 
-extern sf::RenderWindow window;
-extern Button buttonEditorPervious, buttonEditorNext;
-extern std::vector<uint16_t> renderVector;
-extern ScrollList scrollListEditorElements;
+std::vector <LogicStage> logicVector;
 
-void logicLoop(std::queue<sf::Event>* events){
+extern std::vector<uint16_t> renderVector;
+
+extern std::queue<sf::Event> events;
+
+void logicLoop(){
     
     renderVector.push_back(Element::editorMain);
     renderVector.push_back(Element::editorListStructural);
+
+    logicVector.push_back(LogicStage(LogicStage::editor, true));
 
     double tickTime = 1000000 / TICKRATE;
     sf::Clock tickClock;
@@ -27,26 +33,15 @@ void logicLoop(std::queue<sf::Event>* events){
             sf::sleep(sf::microseconds(10));
             continue;
         }
-        // handling events
-        while (!events->empty()){
+        for (int8_t n = logicVector.size() - 1; n > -1; n--){
+            switch (logicVector[n].type){
+                case LogicStage::editor:
+                    HandleEditor();
+                    break;
 
-            switch (events->front().type){
-                
-            case sf::Event::MouseButtonPressed:
-                buttonEditorNext.checkClick(sf::Mouse::getPosition(window));
-                buttonEditorPervious.checkClick(sf::Mouse::getPosition(window));
-                scrollListEditorElements.isClicked(sf::Mouse::getPosition(window));
-                break;
-            case sf::Event::MouseButtonReleased:
-                buttonEditorNext.checkClick(sf::Mouse::getPosition(window));
-                buttonEditorPervious.checkClick(sf::Mouse::getPosition(window));
-                scrollListEditorElements.isClicked(sf::Mouse::getPosition(window));
-                break;
-            default:
-                break;
+                default:
+                    break;
             }
-
-            events->pop();
         }
 
 

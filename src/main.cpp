@@ -20,7 +20,8 @@ int main(int, char**){
 
     DataContainer data = LoadGame();
 
-    std::thread logicThread = std::thread(logicLoop, PrepareGraphics());
+    PrepareGraphics();
+    std::thread logicThread = std::thread(logicLoop);
 
     // graphics loop
     while (setting::IsRunning()){

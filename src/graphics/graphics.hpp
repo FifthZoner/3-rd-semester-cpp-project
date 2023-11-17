@@ -5,8 +5,7 @@
 #include <cstdint>
 #include <vector>
 
-// pass to logic loop
-std::queue<sf::Event>* PrepareGraphics();
+void PrepareGraphics();
 
 void Render();
 
