@@ -4,9 +4,14 @@
 
 extern std::vector <Texturable*> affectedTexturables;
 
-void Texturable::copyRect(Texturable* target){
+void Texturable::copyRectConfig(Texturable* target){
     target->textureRect = textureRect;
     affectedTexturables.push_back(target);
+}
+
+void Texturable::copyRect(Texturable* target){
+    target->textureRect = textureRect;
+    target->setTexture();
 }
 
 void Texturable::setTexture(){

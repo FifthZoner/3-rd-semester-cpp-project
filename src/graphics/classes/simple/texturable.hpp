@@ -6,7 +6,7 @@
 
 #include "../../../misc/texturePacker.hpp"
 
-// this is a primitive class, DO NOT USE, implement path getting
+// this is a primitive class, DO NOT USE for anything other than storage for more complex implementations, implement path getting
 class Texturable {
 protected:
     // rect is a pointer to allow for using the same texture on many objects
@@ -15,6 +15,9 @@ protected:
 public:
 
     // DO NOT pass a class with filled rect you need
+    void copyRectConfig(Texturable* target);
+    
+    // DO NOT pass anything before texture packer has run
     void copyRect(Texturable* target);
 
     // this will do anyting only in classes with texturable sfml objects, so in parts it will be skipped

@@ -48,7 +48,7 @@ void ContentImage::draw(sf::RenderTexture& target){
 ContentImage::ContentImage(sf::Vector2f size, sf::Vector2f position, Texturable* donor){
     this->size = size;
     sprite.setPosition(position);
-    donor->copyRect(this);
+    donor->copyRectConfig(this);
 }
 
 ContentImage::ContentImage(sf::Vector2f size, sf::Vector2f position, std::string path){
@@ -86,7 +86,7 @@ void ContentBoth::draw(sf::RenderTexture& target){
 ContentBoth::ContentBoth(sf::Vector2f& size, sf::Vector2f& textPosition, sf::Vector2f& imagePosition, Texturable* donor, UIStyle& style, std::string& text, sf::Vector2f position){
     this->size = size;
     sprite.setPosition(imagePosition + position);
-    donor->copyRect(this);
+    donor->copyRectConfig(this);
 
     this->text.setFont(*style.font);
     this->text.setString(text);

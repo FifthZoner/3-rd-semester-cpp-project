@@ -7,6 +7,9 @@ Button buttonEditorPervious, buttonEditorNext, buttonEditorStart;
 Frame frameEditorStructuralText, frameEditorTopBar;
 ScrollList scrollListEditorElements;
 
+// Texture storage
+Texturable textureEditorAttachmentPoint;
+
 extern std::vector <std::vector <ShipPart*>> shipParts;
 
 void RenderEditorPrepare(){
@@ -31,6 +34,8 @@ void RenderEditorPrepare(){
     scrollListEditorElements.create(shipParts, setting::GetUIStyle(), 
     sf::Vector2f(240, setting::Resolution().y - 48), sf::Vector2f(0, 48), sf::Vector2f(24, 48),
     sf::Vector2f(216, 60));
+
+    textureEditorAttachmentPoint.loadTextureStandalone("data/textures/parts/other/attachmentPoint.png");
 
 }
 
