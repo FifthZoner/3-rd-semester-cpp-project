@@ -8,14 +8,11 @@
 #include "gameData.hpp"
 #include "../graphics/classes/simple/texturable.hpp"
 
-class MountPoints{
-private:
+struct MountPoints{
     uint8_t frontPoint:2;
     uint8_t leftPoint:2;
     uint8_t rightPoint:2;
     uint8_t backPoint:2;
-
-public:
 
     enum Point{
         front, right, back, left
@@ -45,6 +42,10 @@ public:
 class ShipPart : public Texturable {
 protected:
     MountPoints mountPoints;
+public:
+    const MountPoints &getMountPoints() const;
+
+protected:
     std::string name, description;
     uint32_t weight, health;
 
@@ -53,7 +54,7 @@ public:
     // creates a part from definition
     virtual void create(std::string path);
 
-    const sf::IntRect* getRectPointer() const;
+    [[nodiscard]] const sf::IntRect* getRectPointer() const;
 
     std::string getName();
     std::string getDesc();
@@ -62,9 +63,9 @@ public:
 
     ShipPart();
 
-    ShipPart(std::string path);
+    explicit ShipPart(std::string path);
 
-    virtual ~ShipPart();
+    ~ShipPart() override;
 
 };
 

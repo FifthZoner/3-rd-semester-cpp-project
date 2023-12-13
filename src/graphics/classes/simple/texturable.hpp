@@ -26,6 +26,9 @@ public:
     // Seriously do not use this in base class
     void loadTextureStandalone(const std::string& path);
 
+    // copies the rect data to given texture
+    void setSprite(sf::Sprite& sprite);
+
     Texturable();
 
     virtual ~Texturable();

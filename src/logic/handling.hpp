@@ -3,6 +3,6 @@
 
 // this is just a mass include file
 
-#include "handling/editorHandling.hpp"
+#include "handling/editor/editorHandling.hpp"
 
 #endif

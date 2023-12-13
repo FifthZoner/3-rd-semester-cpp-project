@@ -25,6 +25,11 @@ Texturable::Texturable(){
 Texturable::~Texturable(){ 
 }
 
+void Texturable::setSprite(sf::Sprite& sprite){
+    sprite.setTexture(GetMainTexture());
+    sprite.setTextureRect(*textureRect);
+}
+
 void Texturable::loadTextureStandalone(const std::string& path){
     textureRect = new sf::IntRect;
     AddTextureToPack(path, textureRect);

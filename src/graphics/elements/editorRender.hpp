@@ -3,6 +3,19 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../../misc/settings.hpp"
+#include "../../classes/gameData.hpp"
+#include "../classes/graphicsLib.hpp"
+
+// Graphical elements
+inline Button buttonEditorPervious, buttonEditorNext, buttonEditorStart;
+inline Frame frameEditorStructuralText, frameEditorTopBar;
+inline ScrollList scrollListEditorElements;
+
+// Texture storage
+inline Texturable textureEditorAttachmentPoint;
+inline Texturable textureEditorRestrictedPoint;
+
 void RenderEditorPrepare();
 
 void RenderEditorMain(sf::RenderWindow& window);

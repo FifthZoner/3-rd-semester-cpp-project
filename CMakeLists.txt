@@ -19,7 +19,9 @@ FetchContent_Declare(SFML
         GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(3_rd_semester_cpp_project ${3_rd_semester_cpp_project_SOURCES})
+add_executable(3_rd_semester_cpp_project ${3_rd_semester_cpp_project_SOURCES}
+        src/logic/handling/editor/editorShip.hpp
+        src/logic/handling/editor/editorShip.cpp)
 
 target_compile_features(3_rd_semester_cpp_project PRIVATE cxx_std_23)
 target_link_libraries(3_rd_semester_cpp_project PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network Xrandr)

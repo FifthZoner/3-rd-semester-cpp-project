@@ -146,3 +146,7 @@ ShipPart::~ShipPart(){}
 const sf::IntRect* ShipPart::getRectPointer() const{
     return textureRect;
 }
+
+const MountPoints& ShipPart::getMountPoints() const {
+    return mountPoints;
+}
