@@ -1,38 +1,32 @@
-cmake_minimum_required(VERSION 3.5.0)
-project(project VERSION 0.1.0 LANGUAGES C CXX)
+cmake_minimum_required(VERSION 3.26)
+project(3_rd_semester_cpp_project)
 
-include(CTest)
-enable_testing()
+set(CMAKE_CXX_STANDARD 23)
 
-file (GLOB_RECURSE project_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
-file (GLOB_RECURSE project_HEADERS CONFIGURE_DEPENDS "src/*.hpp")
+file (GLOB_RECURSE 3_rd_semester_cpp_project_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
+file (GLOB_RECURSE 3_rd_semester_cpp_project_HEADERS CONFIGURE_DEPENDS "src/*.hpp")
 
-file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/data)
-
-set (project_INCLUDE_DIRS "")
-foreach (_headerFile ${project_HEADERS})
+set (3_rd_semester_cpp_project_INCLUDE_DIRS "")
+foreach (_headerFile ${3_rd_semester_cpp_project_HEADERS})
     get_filename_component(_dir ${_headerFile} PATH)
-    list (APPEND project_INCLUDE_DIRS ${_dir})
+    list (APPEND 3_rd_semester_cpp_project_INCLUDE_DIRS ${_dir})
 endforeach()
-list (REMOVE_DUPLICATES project_INCLUDE_DIRS)
+list (REMOVE_DUPLICATES 3_rd_semester_cpp_project_INCLUDE_DIRS)
+
 include(FetchContent)
 FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x)
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-if (WIN32)
-FILE(GLOB DLLS "build/_deps/sfml-build/lib/*.dll")
-file(COPY ${DLLS} DESTINATION "${CMAKE_BINARY_DIR}")
-endif ()
+add_executable(3_rd_semester_cpp_project ${3_rd_semester_cpp_project_SOURCES})
 
-add_executable(out ${project_SOURCES})
-target_compile_features(out PRIVATE cxx_std_20)
-target_link_libraries(out PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
-target_include_directories(out PRIVATE ${project_INCLUDE_DIRS})
+target_compile_features(3_rd_semester_cpp_project PRIVATE cxx_std_23)
+target_link_libraries(3_rd_semester_cpp_project PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network Xrandr)
+target_include_directories(3_rd_semester_cpp_project PRIVATE ${3_rd_semester_cpp_project_INCLUDE_DIRS})
 file(COPY "data" DESTINATION "${CMAKE_BINARY_DIR}")
 
-install(TARGETS out)
+install(TARGETS 3_rd_semester_cpp_project)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
