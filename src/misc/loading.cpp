@@ -39,6 +39,11 @@ DataContainer LoadGame(){
 
     // packer must be after ALL texture loading, remember that in the future please - myself
     RunTexturePacking();
+
+    // other checks
+    if (setting::Resolution().x > 1280 and setting::Resolution().y > 720) {
+        setting::editorScale = 1.5f * float(setting::Resolution().x) / 1280.f;
+    }
     
     return data;
 }

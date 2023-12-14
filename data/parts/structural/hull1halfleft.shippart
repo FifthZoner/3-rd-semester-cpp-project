@@ -1,0 +1,13 @@
+# This is a middle structural part of the ship
+name "Hull half left"
+description "A simple structural half for giving the vessel a shape"
+# Physical
+weight 2500
+health 5
+# Points: present/none/restricted
+front none
+right present
+back none
+left none
+# Graphics
+texture "data/textures/parts/structural/hull1halfleft.png"

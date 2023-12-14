@@ -21,6 +21,9 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(3_rd_semester_cpp_project ${3_rd_semester_cpp_project_SOURCES}
         src/logic/handling/editor/editorShip.hpp
+        src/logic/handling/editor/editorShip.cpp
+        src/logic/handling/editor/editorShip.cpp
+        src/logic/handling/editor/editorShip.cpp
         src/logic/handling/editor/editorShip.cpp)
 
 target_compile_features(3_rd_semester_cpp_project PRIVATE cxx_std_23)

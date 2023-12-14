@@ -8,7 +8,7 @@
 #include "../classes/graphicsLib.hpp"
 
 // Graphical elements
-inline Button buttonEditorPervious, buttonEditorNext, buttonEditorStart;
+inline Button buttonEditorPrevious, buttonEditorNext, buttonEditorStart;
 inline Frame frameEditorStructuralText, frameEditorTopBar;
 inline ScrollList scrollListEditorElements;
 

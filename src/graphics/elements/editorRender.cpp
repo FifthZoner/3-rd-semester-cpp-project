@@ -1,11 +1,12 @@
 #include "editorRender.hpp"
+#include "../../logic/handling/editor/editorShip.hpp"
 
 extern std::vector <std::vector <ShipPart*>> shipParts;
 
 void RenderEditorPrepare(){
-    buttonEditorPervious.create(sf::Vector2f(48, 48), sf::Vector2f(0, 0), setting::EditorBackgroundColor(), 
-    setting::EditorBorderColor(), 6, setting::EditorBorderColor(), GetMainFont(), "<", 
-    setting::EditorTextColor(), setting::EditorTextSize() * 2);
+    buttonEditorPrevious.create(sf::Vector2f(48, 48), sf::Vector2f(0, 0), setting::EditorBackgroundColor(),
+                                setting::EditorBorderColor(), 6, setting::EditorBorderColor(), GetMainFont(), "<",
+                                setting::EditorTextColor(), setting::EditorTextSize() * 2);
 
     buttonEditorNext.create(sf::Vector2f(48, 48), sf::Vector2f(192, 0), setting::EditorBackgroundColor(), 
     setting::EditorBorderColor(), 6, setting::EditorBorderColor(), GetMainFont(), ">", 
@@ -31,12 +32,17 @@ void RenderEditorPrepare(){
 }
 
 void RenderEditorMain(sf::RenderWindow& window){
-    
+    for (auto& n : editorParts) {
+        n.drawPoints(window);
+    }
+    for (auto& n : editorParts) {
+        n.draw(window);
+    }
 }  
 
 void RenderEditorList(sf::RenderWindow& window){
     buttonEditorNext.draw(window);
-    buttonEditorPervious.draw(window);
+    buttonEditorPrevious.draw(window);
     buttonEditorStart.draw(window);
     frameEditorStructuralText.draw(window);
     frameEditorTopBar.draw(window);

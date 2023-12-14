@@ -1,5 +1,5 @@
 # This is a middle structural part of the ship
-name "Hull segment 1"
+name "Hull segment"
 description "A simple structural segment for giving the vessel a shape"
 # Physical
 weight 5000

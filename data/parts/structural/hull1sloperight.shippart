@@ -1,0 +1,13 @@
+# This is a middle structural part of the ship
+name "Hull slope right"
+description "A simple structural slope for giving the vessel a shape"
+# Physical
+weight 2500
+health 5
+# Points: present/none/restricted
+front none
+right none
+back present
+left present
+# Graphics
+texture "data/textures/parts/structural/hull1sloperight.png"

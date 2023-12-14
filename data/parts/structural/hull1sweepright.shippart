@@ -1,0 +1,13 @@
+# This is a middle structural part of the ship
+name "Hull sweep right"
+description "A simple structural sweep for giving the vessel a shape"
+# Physical
+weight 1000
+health 2
+# Points: present/none/restricted
+front none
+right none
+back none
+left present
+# Graphics
+texture "data/textures/parts/structural/hull1sweepright.png"

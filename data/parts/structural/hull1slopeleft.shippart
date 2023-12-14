@@ -1,5 +1,5 @@
 # This is a middle structural part of the ship
-name "Hull slope 1"
+name "Hull slope left"
 description "A simple structural slope for giving the vessel a shape"
 # Physical
 weight 2500
@@ -10,4 +10,4 @@ right present
 back present
 left none
 # Graphics
-texture "data/textures/parts/structural/hull1slope.png"
+texture "data/textures/parts/structural/hull1slopeleft.png"

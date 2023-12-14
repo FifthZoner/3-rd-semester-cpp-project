@@ -1,6 +1,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <cmath>
 
 #include "texturePacker.hpp"
 #include "../graphics/classes/simple/texturable.hpp"
@@ -30,23 +31,23 @@ void RunTexturePacking(){
 
     // Figuring out texture size for given amount of elements
     // Assumes 32x32 images, I'll try to improve it in the future
-    uint8_t side = 1;
+    unsigned int side = 1;
     while (side*side < packingList.size()){
         side++;
     }
 
-    std::cout << "Packer running with amount: " << packingList.size() << ", size: " << side * 1 << "\n";
+    std::cout << "Packer running with amount: " << packingList.size() << ", size: " << side << "\n";
 
     mainTexture.create(side * 32, side * 32);
     mainTexture.clear(sf::Color(0, 0, 0, 0));
     for (uint32_t n = 0; n < packingList.size(); n++){
         if (packingList[n].texture.loadFromFile(packingList[n].path)){
             packingList[n].sprite.setTexture(packingList[n].texture);
-            packingList[n].sprite.setPosition(32 * (n % side), 32 * (n / side));
+            packingList[n].sprite.setPosition(32 * (n % side), 32 * floor(n / side));
             mainTexture.draw(packingList[n].sprite);
             packingList[n].path.clear();
         }
-        *packingList[n].rect = sf::IntRect(32 * (n % side), 32 * (n / 4), 32, 32);
+        *packingList[n].rect = sf::IntRect(32 * (n % side), 32 * floor(n / side), 32, 32);
     }
 
     mainTexture.display();

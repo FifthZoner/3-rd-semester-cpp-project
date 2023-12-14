@@ -2,37 +2,42 @@
 #include <queue>
 
 #include "editorHandling.hpp"
+#include "editorShip.hpp"
+#include "../../classes/part.hpp"
 #include "../graphics/classes/graphicsLib.hpp"
 
 extern std::queue <sf::Event> events;
 
-bool anythingClicked = false;
+uint16_t whatClicked = 0;
+EditorShipPart* clickedEditorPart = nullptr;
 
-uint16_t whatClicked;
-
-extern Button buttonEditorPervious, buttonEditorNext;
+extern Button buttonEditorPrevious, buttonEditorNext;
 extern Frame frameEditorStructuralText;
 extern ScrollList scrollListEditorElements;
 
 enum EditorClickables{
-    pervious, next, list
+    none, previous, next, list, part
 };
 
 void HandleEditorPressed(){
     if (buttonEditorNext.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
         whatClicked = EditorClickables::next;
-        anythingClicked = true;
         return;
     }
-    if (buttonEditorPervious.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
-        whatClicked = EditorClickables::pervious;
-        anythingClicked = true;
+    if (buttonEditorPrevious.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
+        whatClicked = EditorClickables::previous;
         return;
     }
     if (scrollListEditorElements.isClicked(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
         whatClicked = EditorClickables::list;
-        anythingClicked = true;
         return;
+    }
+    for (auto& n : editorParts) {
+        if (n.isClicked(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))) {
+            clickedEditorPart = &n;
+            whatClicked = EditorClickables::part;
+            return;
+        }
     }
 }
 
@@ -44,16 +49,23 @@ void HandleEditorReleased(){
             }
         break;
 
-        case EditorClickables::pervious:
-            if (buttonEditorPervious.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
+        case EditorClickables::previous:
+            if (buttonEditorPrevious.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
                 scrollListEditorElements.perviousList();
             }
         break;
 
         case EditorClickables::list:
             if (scrollListEditorElements.isClicked(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
-                // reacting to clicking an element
+                editorParts.emplace_back(reinterpret_cast<ShipPart*>(scrollListEditorElements.getLastTileClicked()), sf::Vector2f(setting::Resolution() / 2));
             }
+        break;
+
+        case EditorClickables::part:
+            clickedEditorPart = nullptr;
+        break;
+
+        default:
         break;
     }
 }
@@ -66,9 +78,30 @@ void HandleEditor(){
             break;
 
             case sf::Event::MouseButtonReleased:
-                if (anythingClicked){
-                    anythingClicked = false;
+                if (whatClicked){
                     HandleEditorReleased();
+                    whatClicked = EditorClickables::none;
+                }
+            break;
+
+            case sf::Event::MouseMoved:
+                if (whatClicked == EditorClickables::part) {
+                    clickedEditorPart->move(sf::Vector2f(float(events.front().mouseMove.x), float(events.front().mouseMove.y)));
+                }
+            break;
+
+            case sf::Event::TextEntered:
+                if (whatClicked == EditorClickables::part) {
+                   switch(toupper(events.front().text.unicode)) {
+                       case 'Q':
+                           clickedEditorPart->rotate(-1);
+                       break;
+                       case 'E':
+                           clickedEditorPart->rotate(1);
+                           break;
+                       default:
+                       break;
+                   }
                 }
             break;
 

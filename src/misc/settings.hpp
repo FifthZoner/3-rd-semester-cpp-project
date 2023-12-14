@@ -23,6 +23,8 @@ struct UIStyle {
 
 namespace setting{
 
+    inline float editorScale = 1.5;
+
     // returns true if successful, false otherwise
     bool LoadSettings(std::string path);
 
