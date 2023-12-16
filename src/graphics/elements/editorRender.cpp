@@ -1,5 +1,7 @@
+#include <iostream>
 #include "editorRender.hpp"
 #include "../../logic/handling/editor/editorShip.hpp"
+#include "editorHandling.hpp"
 
 extern std::vector <std::vector <ShipPart*>> shipParts;
 
@@ -32,12 +34,17 @@ void RenderEditorPrepare(){
 }
 
 void RenderEditorMain(sf::RenderWindow& window){
+    while (editorElementLock){
+        sf::sleep(sf::microseconds(10));
+    }
+    editorElementLock = true;
     for (auto& n : editorParts) {
         n.drawPoints(window);
     }
     for (auto& n : editorParts) {
         n.draw(window);
     }
+    editorElementLock = false;
 }  
 
 void RenderEditorList(sf::RenderWindow& window){

@@ -53,6 +53,11 @@ EditorShipPart::EditorShipPart(ShipPart* part, sf::Vector2f position) {
     points[3].setScale(0.5f * setting::editorScale, 0.5f * setting::editorScale);
     sprite.setScale(setting::editorScale, setting::editorScale);
 
+    sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
+    points[0].setOrigin(points[0].getLocalBounds().width / 2, points[0].getLocalBounds().height / 2 + sprite.getLocalBounds().height);
+    points[1].setOrigin(points[1].getLocalBounds().width / 2 - sprite.getLocalBounds().width, points[1].getLocalBounds().height / 2);
+    points[2].setOrigin(points[2].getLocalBounds().width / 2, points[2].getLocalBounds().height / 2 - sprite.getLocalBounds().height);
+    points[3].setOrigin(points[3].getLocalBounds().width / 2 + sprite.getLocalBounds().width, points[3].getLocalBounds().height / 2);
     move(position);
 }
 
@@ -62,20 +67,18 @@ void EditorShipPart::move(sf::Vector2f position, bool snap) {
     }
 
     sprite.setPosition(position);
-    // getting the current angle and setting all the point positions accordingly
-    auto angle = uint8_t(sprite.getRotation() / 90);
-    points[0 + angle % 4].setPosition(position.x + sprite.getGlobalBounds().width * 0.25f,
-                                      position.y - sprite.getGlobalBounds().height * 0.25f);
-    points[1 + angle % 4].setPosition(position.x + sprite.getGlobalBounds().width * 0.75f,
-                                      position.y + sprite.getGlobalBounds().height * 0.25f);
-    points[2 + angle % 4].setPosition(position.x +  sprite.getGlobalBounds().width * 0.25f,
-                                      position.y + sprite.getGlobalBounds().height * 0.75f);
-    points[3 + angle % 4].setPosition(position.x - sprite.getGlobalBounds().width * 0.25f,
-                                      position.y + sprite.getGlobalBounds().height * 0.25f);
+    points[0].setPosition(position);
+    points[1].setPosition(position);
+    points[2].setPosition(position);
+    points[3].setPosition(position);
 }
 
 void EditorShipPart::rotate(int8_t angle) {
     sprite.rotate(float(angle) * 90);
+    points[0].rotate(float(angle) * 90);
+    points[1].rotate(float(angle) * 90);
+    points[2].rotate(float(angle) * 90);
+    points[3].rotate(float(angle) * 90);
 
     move(sprite.getPosition());
 }

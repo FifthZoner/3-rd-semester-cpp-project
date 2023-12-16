@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <queue>
+#include <iostream>
 
 #include "editorHandling.hpp"
 #include "editorShip.hpp"
@@ -57,7 +58,12 @@ void HandleEditorReleased(){
 
         case EditorClickables::list:
             if (scrollListEditorElements.isClicked(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
+                while (editorElementLock){
+                    sf::sleep(sf::microseconds(10));
+                }
+                editorElementLock = true;
                 editorParts.emplace_back(reinterpret_cast<ShipPart*>(scrollListEditorElements.getLastTileClicked()), sf::Vector2f(setting::Resolution() / 2));
+                editorElementLock = false;
             }
         break;
 
@@ -68,6 +74,21 @@ void HandleEditorReleased(){
         default:
         break;
     }
+}
+
+void EditorDeletePart(){
+    while (editorElementLock){
+        sf::sleep(sf::microseconds(10));
+    }
+    editorElementLock = true;
+    for (unsigned int n = 0; n < editorParts.size(); n++) {
+        if (&editorParts[n] == clickedEditorPart) {
+            editorParts.erase(editorParts.begin() + n);
+            editorElementLock = false;
+            return;
+        }
+    }
+    editorElementLock = false;
 }
 
 void HandleEditor(){
@@ -99,6 +120,9 @@ void HandleEditor(){
                        case 'E':
                            clickedEditorPart->rotate(1);
                            break;
+                       case 8:
+                       case 127:
+                           EditorDeletePart();
                        default:
                        break;
                    }

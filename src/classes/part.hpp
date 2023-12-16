@@ -38,6 +38,8 @@ struct MountPoints{
    ~MountPoints();
 };
 
+uint8_t StrToPoint(std::string& string);
+
 // this class defines a part, can be used for structural parts
 class ShipPart : public Texturable {
 protected:

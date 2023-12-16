@@ -1,0 +1,13 @@
+# This is a basic ship control cockpit
+name "Cockpit mk1"
+description "A simple structural segment for giving the vessel a shape"
+# Physical
+weight 8000
+health 15
+# Points: present/none/restricted
+front none
+right none
+back present
+left none
+# Graphics
+texture "data/textures/parts/control/cockpit1.png"

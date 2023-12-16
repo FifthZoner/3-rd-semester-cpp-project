@@ -7,18 +7,22 @@ namespace fs = std::filesystem;
 #include "texturePacker.hpp"
 #include "../graphics/elements/editorRender.hpp"
 #include "settings.hpp"
+#include "control.hpp"
 
 std::vector <std::vector <ShipPart*>> shipParts;
 
 void LoadParts(DataContainer& data){
 
-    shipParts.resize(1);
+    shipParts.resize(2);
 
     // structurals
     for (auto& entry : fs::directory_iterator("data/parts/structural/")){
         shipParts[0].push_back(new ShipPart(entry.path().string()));
     }
-
+    // control
+    for (auto& entry : fs::directory_iterator("data/parts/control/")){
+        shipParts[1].push_back(new ShipControl(entry.path().string()));
+    }
 
 
 }
