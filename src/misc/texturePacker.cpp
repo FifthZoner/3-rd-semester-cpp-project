@@ -17,8 +17,8 @@ PackerStruct::PackerStruct(std::string path, sf::IntRect* rect){
 std::vector <PackerStruct> packingList;
 std::vector <Texturable*> affectedTexturables;
 
-void AddTextureToPack(std::string path, sf::IntRect* rect){
-    packingList.push_back(PackerStruct(path, rect));
+void AddTextureToPack(const std::string& path, sf::IntRect* rect){
+    packingList.emplace_back(path, rect);
 }
 
 void SetTextures(){
@@ -35,8 +35,6 @@ void RunTexturePacking(){
     while (side*side < packingList.size()){
         side++;
     }
-
-    std::cout << "Packer running with amount: " << packingList.size() << ", size: " << side << "\n";
 
     mainTexture.create(side * 32, side * 32);
     mainTexture.clear(sf::Color(0, 0, 0, 0));

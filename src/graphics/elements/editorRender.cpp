@@ -1,6 +1,6 @@
 #include <iostream>
 #include "editorRender.hpp"
-#include "../../logic/handling/editor/editorShip.hpp"
+#include "../../logic/handling/editor/editorShipPart.hpp"
 #include "editorHandling.hpp"
 
 extern std::vector <std::vector <ShipPart*>> shipParts;
@@ -21,6 +21,14 @@ void RenderEditorPrepare(){
     frameEditorStructuralText.create(sf::Vector2f(144, 48), sf::Vector2f(48, 0), setting::EditorBackgroundColor(), 
     setting::EditorBorderColor(), 6, GetMainFont(), "STRUCTURAL", 
     setting::EditorTextColor(), setting::EditorTextSize());
+
+    frameEditorControlText.create(sf::Vector2f(144, 48), sf::Vector2f(48, 0), setting::EditorBackgroundColor(),
+                                  setting::EditorBorderColor(), 6, GetMainFont(), "CONTROL",
+                                  setting::EditorTextColor(), setting::EditorTextSize());
+
+    frameEditorEngineText.create(sf::Vector2f(144, 48), sf::Vector2f(48, 0), setting::EditorBackgroundColor(),
+                                 setting::EditorBorderColor(), 6, GetMainFont(), "ENGINES",
+                                 setting::EditorTextColor(), setting::EditorTextSize());
 
     frameEditorTopBar.create(sf::Vector2f(setting::Resolution().x - 336, 48), sf::Vector2f(240, 0), setting::GetUIStyle()); 
 
@@ -51,7 +59,22 @@ void RenderEditorList(sf::RenderWindow& window){
     buttonEditorNext.draw(window);
     buttonEditorPrevious.draw(window);
     buttonEditorStart.draw(window);
-    frameEditorStructuralText.draw(window);
+    switch (scrollListEditorElements.getCurrentTab()) {
+        case 0:
+            // structural
+            frameEditorStructuralText.draw(window);
+            break;
+        case 1:
+            // control
+            frameEditorControlText.draw(window);
+            break;
+        case 2:
+            // engines
+            frameEditorEngineText.draw(window);
+            break;
+        default:
+            break;
+    }
     frameEditorTopBar.draw(window);
     scrollListEditorElements.draw(window, sf::Mouse::getPosition(window));
 }

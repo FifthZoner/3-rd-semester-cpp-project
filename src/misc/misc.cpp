@@ -29,8 +29,6 @@ void HideConsole(){
 
 #endif
 
-#include <iostream>
-
 std::vector<std::string> SplitLine(std::string string){
     std::vector<std::string> vec;
 
@@ -51,7 +49,6 @@ std::vector<std::string> SplitLine(std::string string){
         if (string[n] == ' ' and n != 0){
             vec.push_back(string.substr(start, n - start));
             start = n + 1;
-            std::cout << string << " " << n << "\n";
         }
         else if (string[n] == '\"'){
             

@@ -1,4 +1,5 @@
-#include "editorShip.hpp"
+#include <cmath>
+#include "editorShipPart.hpp"
 #include "../../graphics/elements/editorRender.hpp"
 
 EditorShipPart::EditorShipPart(ShipPart* part, sf::Vector2f position) {
@@ -63,7 +64,8 @@ EditorShipPart::EditorShipPart(ShipPart* part, sf::Vector2f position) {
 
 void EditorShipPart::move(sf::Vector2f position, bool snap) {
     if (snap) {
-        // TODO: add snapping
+        position.x = std::floor(position.x / (setting::editorScale * 32)) * setting::editorScale * 32;
+        position.y = std::floor(position.y / (setting::editorScale * 32)) * setting::editorScale * 32;
     }
 
     sprite.setPosition(position);

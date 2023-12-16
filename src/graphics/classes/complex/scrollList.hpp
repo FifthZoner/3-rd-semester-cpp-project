@@ -74,6 +74,8 @@ public:
 
     Texturable* getLastTileClicked();
 
+    uint8_t getCurrentTab() const;
+
     ScrollList();
 
     ~ScrollList();

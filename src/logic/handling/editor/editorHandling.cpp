@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "editorHandling.hpp"
-#include "editorShip.hpp"
+#include "editorShipPart.hpp"
 #include "../../classes/part.hpp"
 #include "../graphics/classes/graphicsLib.hpp"
 
@@ -62,7 +62,7 @@ void HandleEditorReleased(){
                     sf::sleep(sf::microseconds(10));
                 }
                 editorElementLock = true;
-                editorParts.emplace_back(reinterpret_cast<ShipPart*>(scrollListEditorElements.getLastTileClicked()), sf::Vector2f(setting::Resolution() / 2));
+                editorParts.emplace_back(reinterpret_cast<ShipPart*>(scrollListEditorElements.getLastTileClicked()), sf::Vector2f(setting::Resolution() / 4));
                 editorElementLock = false;
             }
         break;
@@ -92,7 +92,7 @@ void EditorDeletePart(){
 }
 
 void HandleEditor(){
-    while (events.size()){
+    while (!events.empty()){
         switch (events.front().type){
             case sf::Event::MouseButtonPressed:
                 HandleEditorPressed();
@@ -107,7 +107,7 @@ void HandleEditor(){
 
             case sf::Event::MouseMoved:
                 if (whatClicked == EditorClickables::part) {
-                    clickedEditorPart->move(sf::Vector2f(float(events.front().mouseMove.x), float(events.front().mouseMove.y)));
+                    clickedEditorPart->move(sf::Vector2f(float(events.front().mouseMove.x), float(events.front().mouseMove.y)), true);
                 }
             break;
 
@@ -123,6 +123,8 @@ void HandleEditor(){
                        case 8:
                        case 127:
                            EditorDeletePart();
+                           whatClicked = EditorClickables::none;
+                           break;
                        default:
                        break;
                    }

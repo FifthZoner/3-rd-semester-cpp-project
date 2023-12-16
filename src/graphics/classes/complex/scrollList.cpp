@@ -182,8 +182,10 @@ Texturable* ScrollList::getLastTileClicked(){
     return elements[clickIndex.x][clickIndex.y].getTexturable();
 }
 
-ScrollList::ScrollList(){
-}
+ScrollList::ScrollList()= default;
     
-ScrollList::~ScrollList(){
+ScrollList::~ScrollList()= default;
+
+uint8_t ScrollList::getCurrentTab() const {
+    return currentList;
 }

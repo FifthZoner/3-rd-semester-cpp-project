@@ -20,11 +20,11 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable(3_rd_semester_cpp_project ${3_rd_semester_cpp_project_SOURCES}
-        src/logic/handling/editor/editorShip.hpp
-        src/logic/handling/editor/editorShip.cpp
-        src/logic/handling/editor/editorShip.cpp
-        src/logic/handling/editor/editorShip.cpp
-        src/logic/handling/editor/editorShip.cpp
+        src/logic/handling/editor/editorShipPart.hpp
+        src/logic/handling/editor/editorShipPart.cpp
+        src/logic/handling/editor/editorShipPart.cpp
+        src/logic/handling/editor/editorShipPart.cpp
+        src/logic/handling/editor/editorShipPart.cpp
         src/classes/partTypes/control.hpp
         src/classes/partTypes/control.cpp)
 

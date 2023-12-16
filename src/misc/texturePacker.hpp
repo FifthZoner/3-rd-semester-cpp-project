@@ -17,7 +17,7 @@ struct PackerStruct {
 
 // you MUST manually push to the "extern std::vector <Texturable*> affectedTexturables" after that if you want the texture to update after packing
 // not needed required for parts as the textures are set later other way
-void AddTextureToPack(std::string path, sf::IntRect* rect);
+void AddTextureToPack(const std::string& path, sf::IntRect* rect);
 
 void RunTexturePacking();
 
