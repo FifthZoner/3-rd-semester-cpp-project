@@ -1,0 +1,14 @@
+#ifndef INC_3_RD_SEMESTER_CPP_PROJECT_REACTOR_HPP
+#define INC_3_RD_SEMESTER_CPP_PROJECT_REACTOR_HPP
+
+#include "../part.hpp"
+
+class ShipReactor : public ShipPart {
+private:
+    uint16_t power = 0;
+public:
+    void create(std::string path) override;
+    ShipReactor(std::string path);
+};
+
+#endif //INC_3_RD_SEMESTER_CPP_PROJECT_REACTOR_HPP

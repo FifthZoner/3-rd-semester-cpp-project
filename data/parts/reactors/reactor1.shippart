@@ -1,0 +1,14 @@
+# This is a ship reactor
+name "Nuclear reactor"
+# Physical
+weight 20000
+health 20
+# Reactor
+power 100
+# Points: present/none/restricted
+front present
+right present
+back present
+left present
+# Graphics
+texture "data/textures/parts/reactors/reactor1.png"

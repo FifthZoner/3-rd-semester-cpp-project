@@ -3,12 +3,10 @@
 
 #include "../../classes/part.hpp"
 
-class EditorShipPart {
-private:
+struct EditorShipPart {
     ShipPart* partPointer = nullptr;
     sf::Sprite sprite;
     sf::Sprite points[4];
-public:
     EditorShipPart(ShipPart* part, sf::Vector2f position);
     void move(sf::Vector2f position, bool snap = false);
     // 1 is 90 degrees

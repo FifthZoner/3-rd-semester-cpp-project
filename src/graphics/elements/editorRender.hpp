@@ -9,7 +9,7 @@
 
 // Graphical elements
 inline Button buttonEditorPrevious, buttonEditorNext, buttonEditorStart;
-inline Frame frameEditorStructuralText, frameEditorControlText, frameEditorEngineText, frameEditorTopBar;
+inline Frame frameEditorStructuralText, frameEditorControlText, frameEditorEngineText, frameEditorReactorText, frameEditorTopBar;
 inline ScrollList scrollListEditorElements;
 
 // Texture storage

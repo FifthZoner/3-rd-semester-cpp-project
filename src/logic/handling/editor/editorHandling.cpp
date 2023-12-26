@@ -96,24 +96,24 @@ void HandleEditor(){
         switch (events.front().type){
             case sf::Event::MouseButtonPressed:
                 HandleEditorPressed();
-            break;
+                break;
 
             case sf::Event::MouseButtonReleased:
                 if (whatClicked){
                     HandleEditorReleased();
                     whatClicked = EditorClickables::none;
                 }
-            break;
+                break;
 
             case sf::Event::MouseMoved:
                 if (whatClicked == EditorClickables::part) {
                     clickedEditorPart->move(sf::Vector2f(float(events.front().mouseMove.x), float(events.front().mouseMove.y)), true);
                 }
-            break;
+                break;
 
             case sf::Event::TextEntered:
                 if (whatClicked == EditorClickables::part) {
-                   switch(toupper(events.front().text.unicode)) {
+                   switch(toupper(int(events.front().text.unicode))) {
                        case 'Q':
                            clickedEditorPart->rotate(-1);
                        break;

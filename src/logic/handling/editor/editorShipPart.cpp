@@ -59,7 +59,7 @@ EditorShipPart::EditorShipPart(ShipPart* part, sf::Vector2f position) {
     points[1].setOrigin(points[1].getLocalBounds().width / 2 - sprite.getLocalBounds().width, points[1].getLocalBounds().height / 2);
     points[2].setOrigin(points[2].getLocalBounds().width / 2, points[2].getLocalBounds().height / 2 - sprite.getLocalBounds().height);
     points[3].setOrigin(points[3].getLocalBounds().width / 2 + sprite.getLocalBounds().width, points[3].getLocalBounds().height / 2);
-    move(position);
+    move(position, true);
 }
 
 void EditorShipPart::move(sf::Vector2f position, bool snap) {

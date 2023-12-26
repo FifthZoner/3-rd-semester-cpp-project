@@ -1,0 +1,17 @@
+# This is a ship reactor
+name "Ion engine"
+# Physical
+weight 20000
+health 20
+# engine
+#   power drain
+drain 8
+#   thrust in kN?
+thrust 400
+# Points: present/none/restricted
+front present
+right none
+back restricted
+left none
+# Graphics
+texture "data/textures/parts/engines/engine1.png"
