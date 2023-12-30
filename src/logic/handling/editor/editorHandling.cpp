@@ -4,20 +4,17 @@
 
 #include "editorHandling.hpp"
 #include "editorShipPart.hpp"
-#include "../../classes/part.hpp"
 #include "../graphics/classes/graphicsLib.hpp"
+#include "../../../graphics/elements/editorRender.hpp"
+#include "../../../classes/ship.hpp"
 
 extern std::queue <sf::Event> events;
 
 uint16_t whatClicked = 0;
 EditorShipPart* clickedEditorPart = nullptr;
 
-extern Button buttonEditorPrevious, buttonEditorNext;
-extern Frame frameEditorStructuralText;
-extern ScrollList scrollListEditorElements;
-
 enum EditorClickables{
-    none, previous, next, list, part
+    none, previous, next, list, part, start
 };
 
 void HandleEditorPressed(){
@@ -27,6 +24,10 @@ void HandleEditorPressed(){
     }
     if (buttonEditorPrevious.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
         whatClicked = EditorClickables::previous;
+        return;
+    }
+    if (buttonEditorStart.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
+        whatClicked = EditorClickables::start;
         return;
     }
     if (scrollListEditorElements.isClicked(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
@@ -55,6 +56,17 @@ void HandleEditorReleased(){
                 scrollListEditorElements.perviousList();
             }
         break;
+
+        case EditorClickables::start:
+            if (buttonEditorStart.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
+                auto temp = Ship::createShip(editorParts, {0,0});
+                if (temp != nullptr) {
+                    ships.emplace_back(std::unique_ptr<Ship>(temp));
+                    // add stage changing to gameplay here
+                }
+            }
+
+            break;
 
         case EditorClickables::list:
             if (scrollListEditorElements.isClicked(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
