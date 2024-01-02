@@ -105,3 +105,7 @@ ShipEngine::ShipEngine(std::string path) {
 
     AddTextureToPack(texturePath, textureRect);
 }
+
+uint8_t ShipEngine::type() {
+    return PartType::engine;
+}

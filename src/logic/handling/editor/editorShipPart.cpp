@@ -5,6 +5,7 @@
 EditorShipPart::EditorShipPart(ShipPart* part, sf::Vector2f position) {
 
     part->setSprite(sprite);
+    partPointer = part;
 
     const MountPoints& temp = part->getMountPoints();
     switch (temp.frontPoint){

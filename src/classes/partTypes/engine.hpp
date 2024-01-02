@@ -10,6 +10,7 @@ private:
 public:
     void create(std::string path) override;
     ShipEngine(std::string path);
+    uint8_t type() override;
 };
 
 #endif //INC_3_RD_SEMESTER_CPP_PROJECT_ENGINE_HPP

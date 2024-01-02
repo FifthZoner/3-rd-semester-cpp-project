@@ -8,6 +8,10 @@
 #include "gameData.hpp"
 #include "../graphics/classes/simple/texturable.hpp"
 
+enum PartType {
+    structural, engine, control, reactor, weapon
+};
+
 struct MountPoints{
     uint8_t frontPoint:2;
     uint8_t leftPoint:2;
@@ -62,6 +66,8 @@ public:
     std::string getDesc();
     uint32_t getWeight();
     uint32_t getHealth();
+
+    virtual uint8_t type();
 
     ShipPart();
 

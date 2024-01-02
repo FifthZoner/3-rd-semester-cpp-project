@@ -5,9 +5,6 @@
 void CheckShipConnection(std::vector <std::vector <uint8_t>>& checkArray, unsigned int x, unsigned int y) {
     // 2 is the value of checked
     checkArray[x][y] = 2;
-    if (x > 0 and y > 0 and checkArray[x - 1][y - 1] == 1) {
-        CheckShipConnection(checkArray, x - 1, y - 1);
-    }
 
     if (x > 0 and checkArray[x - 1][y] == 1) {
         CheckShipConnection(checkArray, x - 1, y);
@@ -17,24 +14,12 @@ void CheckShipConnection(std::vector <std::vector <uint8_t>>& checkArray, unsign
         CheckShipConnection(checkArray, x, y - 1);
     }
 
-    if (x < checkArray.size() - 1 and y < checkArray.size() - 1 and checkArray[x + 1][y + 1] == 1) {
-        CheckShipConnection(checkArray, x + 1, y + 1);
-    }
-
     if (x < checkArray.size() - 1 and checkArray[x + 1][y] == 1) {
         CheckShipConnection(checkArray, x + 1, y);
     }
 
-    if (y < checkArray.size() - 1 and checkArray[x][y + 1] == 1) {
+    if (y < checkArray.front().size() - 1 and checkArray[x][y + 1] == 1) {
         CheckShipConnection(checkArray, x, y + 1);
-    }
-
-    if (x < checkArray.size() - 1 and y > 0 and checkArray[x + 1][y - 1] == 1) {
-        CheckShipConnection(checkArray, x + 1, y - 1);
-    }
-
-    if (x > 0 and y < checkArray.size() - 1 and checkArray[x - 1][y + 1] == 1) {
-        CheckShipConnection(checkArray, x - 1, y + 1);
     }
 }
 
@@ -86,7 +71,11 @@ bool IsShipValid (std::vector <EditorShipPart>& parts) {
     for (auto& current : checkArray) {
         for (auto& n : current) {
             if (n == 1) {
+                std::cout << "Disconnected parts!\n";
                 return false;
+            }
+            if (n == 3) {
+                std::cout << "Invalid connections!\n";
             }
         }
     }
@@ -100,7 +89,7 @@ bool IsShipValid (std::vector <EditorShipPart>& parts) {
     bool control = false;
 
     for (auto& n : parts) {
-        if (dynamic_cast<ShipEngine*>(n.partPointer) != nullptr) {
+        if (n.partPointer->type() == PartType::engine) {
             switch (int(n.sprite.getRotation() / 90)) {
                 case 0:
                     engineFront = true;
@@ -115,16 +104,20 @@ bool IsShipValid (std::vector <EditorShipPart>& parts) {
                     engineLeft = true;
                     break;
             }
+            continue;
         }
-        if (dynamic_cast<ShipReactor*>(n.partPointer) != nullptr) {
+        if (n.partPointer->type() == PartType::reactor) {
             reactor = true;
+            continue;
         }
-        if (dynamic_cast<ShipControl*>(n.partPointer) != nullptr) {
+        if (n.partPointer->type() == PartType::control) {
             control = true;
+            continue;
         }
     }
 
     std::cout << "Checked ship with result: " << engineBack * engineFront * engineRight * engineLeft * reactor * control << "\n";
+    std::cout << engineBack << " " << engineFront << " " << engineRight << " " << engineLeft << " " << reactor << " " << control << "\n";
     return engineBack * engineFront * engineRight * engineLeft * reactor * control;
 }
 

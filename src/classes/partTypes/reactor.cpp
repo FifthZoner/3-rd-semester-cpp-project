@@ -99,3 +99,7 @@ ShipReactor::ShipReactor(std::string path) {
 
     AddTextureToPack(texturePath, textureRect);
 }
+
+uint8_t ShipReactor::type() {
+    return PartType::reactor;
+}

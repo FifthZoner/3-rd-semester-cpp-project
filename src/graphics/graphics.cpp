@@ -60,7 +60,6 @@ void Render(){
         window.close();
         setting::IsRunning(false);        
     }
-    
 
     window.clear();
 

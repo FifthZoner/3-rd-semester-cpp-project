@@ -192,3 +192,7 @@ const sf::IntRect* ShipPart::getRectPointer() const{
 const MountPoints& ShipPart::getMountPoints() const {
     return mountPoints;
 }
+
+uint8_t ShipPart::type() {
+    return PartType::structural;
+}

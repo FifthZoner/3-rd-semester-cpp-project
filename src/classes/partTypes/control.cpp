@@ -93,3 +93,7 @@ ShipControl::ShipControl(std::string path) {
 
     AddTextureToPack(texturePath, textureRect);
 }
+
+uint8_t ShipControl::type() {
+    return PartType::control;
+}

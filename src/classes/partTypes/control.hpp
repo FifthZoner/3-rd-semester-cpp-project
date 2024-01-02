@@ -7,5 +7,6 @@ class ShipControl : public ShipPart {
 public:
     void create(std::string path) override;
     ShipControl(std::string path);
+    uint8_t type() override;
 };
 #endif
