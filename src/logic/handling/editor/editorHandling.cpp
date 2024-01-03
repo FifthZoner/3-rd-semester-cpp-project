@@ -7,6 +7,8 @@
 #include "../graphics/classes/graphicsLib.hpp"
 #include "../../../graphics/elements/editorRender.hpp"
 #include "../../../classes/ship.hpp"
+#include "logicLoop.hpp"
+#include "graphics.hpp"
 
 extern std::queue <sf::Event> events;
 
@@ -59,11 +61,21 @@ void HandleEditorReleased(){
 
         case EditorClickables::start:
             if (buttonEditorStart.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
-                auto temp = Ship::createShip(editorParts, {0,0});
-                if (temp != nullptr) {
-                    ships.emplace_back(std::unique_ptr<Ship>(temp));
-                    // add stage changing to gameplay here
-                }
+                //auto temp = Ship::createShip(editorParts, sf::Vector2f(setting::Resolution()) / 2.f);
+                //if (temp != nullptr) {
+                    while (editorElementLock){
+                        sf::sleep(sf::microseconds(10));
+                    }
+                    editorElementLock = true;
+                    ships.clear();
+                    ships.emplace_back();
+                    ships.back().create(editorParts, sf::Vector2f(setting::Resolution()) / 2.f);
+                    logicVector.clear();
+                    logicVector.emplace_back(LogicStage::game, false);
+                    renderVector.clear();
+                    renderVector.push_back(Element::gameplayGame);
+                    editorElementLock = false;
+                //}
             }
 
             break;

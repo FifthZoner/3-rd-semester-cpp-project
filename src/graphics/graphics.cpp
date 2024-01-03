@@ -10,8 +10,6 @@ sf::RenderWindow window;
 
 std::queue<sf::Event> events;
 
-std::vector <uint16_t> renderVector;
-
 std::string GetWindowName(){
     auto vec = ParseTextFileWholeLines("data/other/windownames.list");
     if (vec.size() == 0){
@@ -33,6 +31,7 @@ void PrepareGraphics(){
 }
 
 #include "elements/elements.hpp"
+#include "gameplayRender.hpp"
 
 inline void RenderElements(){
     for (auto current : renderVector){
@@ -42,6 +41,9 @@ inline void RenderElements(){
             break;
         case Element::editorListStructural:
             RenderEditorList(window);
+            break;
+        case Element::gameplayGame:
+            RenderGameplayGame(window);
             break;
         default:
             break;

@@ -47,7 +47,7 @@ void RenderEditorPrepare(){
 
 void RenderEditorMain(sf::RenderWindow& window){
     while (editorElementLock){
-        sf::sleep(sf::microseconds(10));
+        sf::sleep(sf::microseconds(5));
     }
     editorElementLock = true;
     for (auto& n : editorParts) {

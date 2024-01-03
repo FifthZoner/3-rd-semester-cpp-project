@@ -5,12 +5,14 @@
 #include <cstdint>
 #include <vector>
 
+inline std::vector <uint16_t> renderVector;
+
 void PrepareGraphics();
 
 void Render();
 
 enum Element {
-    editorMain, editorListStructural
+    editorMain, editorListStructural, gameplayGame
 };
 
 #endif

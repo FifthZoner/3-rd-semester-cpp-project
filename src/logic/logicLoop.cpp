@@ -5,14 +5,9 @@
 #include "logicStructs.hpp"
 #include "handling.hpp"
 #include "../misc/settings.hpp"
-#include "../graphics/classes/graphicsLib.hpp"
 #include "../graphics/graphics.hpp"
 
 #define TICKRATE 60.0
-
-std::vector <LogicStage> logicVector;
-
-extern std::vector<uint16_t> renderVector;
 
 extern std::queue<sf::Event> events;
 
@@ -21,7 +16,7 @@ void logicLoop(){
     renderVector.push_back(Element::editorMain);
     renderVector.push_back(Element::editorListStructural);
 
-    logicVector.push_back(LogicStage(LogicStage::editor, true));
+    logicVector.emplace_back(LogicStage::editor, true);
 
     double tickTime = 1000000 / TICKRATE;
     sf::Clock tickClock;
@@ -33,11 +28,13 @@ void logicLoop(){
             sf::sleep(sf::microseconds(10));
             continue;
         }
-        for (int8_t n = logicVector.size() - 1; n > -1; n--){
+        for (long n = logicVector.size() - 1; n > -1; n--){
             switch (logicVector[n].type){
                 case LogicStage::editor:
                     HandleEditor();
                     break;
+                case LogicStage::game:
+
 
                 default:
                     break;

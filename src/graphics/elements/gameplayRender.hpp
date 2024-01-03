@@ -1,0 +1,8 @@
+#ifndef INC_3_RD_SEMESTER_CPP_PROJECT_GAMEPLAYRENDER_HPP
+#define INC_3_RD_SEMESTER_CPP_PROJECT_GAMEPLAYRENDER_HPP
+
+#include <SFML/Graphics.hpp>
+
+void RenderGameplayGame(sf::RenderWindow& window);
+
+#endif //INC_3_RD_SEMESTER_CPP_PROJECT_GAMEPLAYRENDER_HPP
