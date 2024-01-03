@@ -1,0 +1,21 @@
+# This is a ship laser weapon
+name "Green laser"
+# Physical
+weight 20000
+health 20
+# Weapon
+drain 10
+projectile "data/textures/parts/projectiles/laserProjectile.png"
+spread 0.05
+scale 1.0
+speed 300.0
+width 6.0;
+damage 4
+reload 20
+# Points: present/none/restricted
+front present
+right present
+back present
+left present
+# Graphics
+texture "data/textures/parts/weapons/laserRight.png"

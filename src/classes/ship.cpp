@@ -184,7 +184,6 @@ void Ship::HandleUserInput() {
     coords = partSprites.front().getPosition() + speed / 60.f;
     rotation += angularSpeed / 60.f;
     rotation = std::fmod(rotation, 360.f);
-    std::cout << rotation << "  " << angularSpeed << "\n";
     setRotation(rotation);
     setPosition(coords);
 }
