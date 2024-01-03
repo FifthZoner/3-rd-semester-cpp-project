@@ -6,9 +6,10 @@
 #include "../misc/settings.hpp"
 #include "../misc/misc.hpp"
 
-sf::RenderWindow window;
+sf::View view;
 
-std::queue<sf::Event> events;
+sf::Texture backgroundTexture;
+sf::Sprite backgroundSprite;
 
 std::string GetWindowName(){
     auto vec = ParseTextFileWholeLines("data/other/windownames.list");
@@ -28,10 +29,16 @@ void PrepareGraphics(){
     window.setFramerateLimit(setting::Framerate());
     window.setActive(true);
     window.setVerticalSyncEnabled(true);
+    view.setSize(sf::Vector2f(setting::Resolution()));
+    view.setCenter(sf::Vector2f(setting::Resolution()) / 2.f);
+    backgroundTexture.loadFromFile("data/textures/spaceBackground.jpg");
+    backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setOrigin(backgroundSprite.getGlobalBounds().getSize() / 2.f);
 }
 
 #include "elements/elements.hpp"
 #include "gameplayRender.hpp"
+#include "logicLoop.hpp"
 
 inline void RenderElements(){
     for (auto current : renderVector){
@@ -53,7 +60,7 @@ inline void RenderElements(){
 
 void Render(){
 
-    sf::Event event;
+    sf::Event event{};
     while (window.pollEvent(event)){
         if (event.type != sf::Event::Closed){
             events.push(event);
@@ -64,6 +71,22 @@ void Render(){
     }
 
     window.clear();
+
+    if (!logicVector.empty() and logicVector.front().type == LogicStage::game) {
+        view.setCenter(*gameplayCameraPosition);
+        view.setRotation(*gameplayCameraRotation);
+        backgroundSprite.setPosition(*gameplayCameraPosition);
+    }
+    else {
+        view.setCenter(sf::Vector2f(setting::Resolution()) / 2.f);
+        backgroundSprite.setPosition(sf::Vector2f(setting::Resolution()) / 2.f);
+        view.setRotation(0);
+    }
+
+    // off for testing
+    window.setView(view);
+
+    window.draw(backgroundSprite);
 
     RenderElements();
 

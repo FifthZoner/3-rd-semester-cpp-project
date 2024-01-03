@@ -6,8 +6,8 @@ health 20
 # engine
 #   power drain
 drain 8
-#   thrust in kN?
-thrust 400
+#   thrust in something
+thrust 2000
 # Points: present/none/restricted
 front present
 right none

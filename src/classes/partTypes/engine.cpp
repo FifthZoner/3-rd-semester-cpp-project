@@ -109,3 +109,11 @@ ShipEngine::ShipEngine(std::string path) {
 uint8_t ShipEngine::type() {
     return PartType::engine;
 }
+
+uint16_t ShipEngine::getThrust() const {
+    return thrust;
+}
+
+uint16_t ShipEngine::getDrain() const {
+    return drain;
+}

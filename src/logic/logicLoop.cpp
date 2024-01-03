@@ -6,6 +6,7 @@
 #include "handling.hpp"
 #include "../misc/settings.hpp"
 #include "../graphics/graphics.hpp"
+#include "gameplayHandling.hpp"
 
 #define TICKRATE 60.0
 
@@ -34,8 +35,8 @@ void logicLoop(){
                     HandleEditor();
                     break;
                 case LogicStage::game:
-
-
+                    HandleGameplay();
+                    break;
                 default:
                     break;
             }

@@ -45,7 +45,7 @@ void HandleEditorPressed(){
     }
 }
 
-void HandleEditorReleased(){
+void HandleEditorReleased() {
     switch (whatClicked){
         case EditorClickables::next:
             if (buttonEditorNext.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
@@ -61,21 +61,19 @@ void HandleEditorReleased(){
 
         case EditorClickables::start:
             if (buttonEditorStart.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
-                //auto temp = Ship::createShip(editorParts, sf::Vector2f(setting::Resolution()) / 2.f);
-                //if (temp != nullptr) {
+                if (Ship::createShip(editorParts, sf::Vector2f(setting::Resolution()) / 2.f)) {
                     while (editorElementLock){
                         sf::sleep(sf::microseconds(10));
                     }
                     editorElementLock = true;
-                    ships.clear();
-                    ships.emplace_back();
-                    ships.back().create(editorParts, sf::Vector2f(setting::Resolution()) / 2.f);
+                    gameplayCameraPosition = &ships.front().coords;
+                    gameplayCameraRotation = &ships.front().rotation;
                     logicVector.clear();
                     logicVector.emplace_back(LogicStage::game, false);
                     renderVector.clear();
                     renderVector.push_back(Element::gameplayGame);
                     editorElementLock = false;
-                //}
+                }
             }
 
             break;

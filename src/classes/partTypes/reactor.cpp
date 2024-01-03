@@ -103,3 +103,7 @@ ShipReactor::ShipReactor(std::string path) {
 uint8_t ShipReactor::type() {
     return PartType::reactor;
 }
+
+uint16_t ShipReactor::getPower() const {
+    return power;
+}

@@ -2,6 +2,10 @@
 #include <memory>
 #include "ship.hpp"
 #include "settings.hpp"
+#include "editorHandling.hpp"
+#include "gameplayHandling.hpp"
+#include "graphics.hpp"
+#include <cmath>
 
 void CheckShipConnection(std::vector <std::vector <uint8_t>>& checkArray, unsigned int x, unsigned int y) {
     // 2 is the value of checked
@@ -120,27 +124,76 @@ bool IsShipValid (std::vector <EditorShipPart>& parts) {
     return engineBack * engineFront * engineRight * engineLeft * reactor * control;
 }
 
-Ship* Ship::createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
+bool Ship::createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
 
     // Will be removed after ship creation testing
     //if (!IsShipValid(parts)) {
-    //    return nullptr;
+    //    return false;
     //}
 
-    Ship* temp;
-    temp->create(parts, position);
-    return temp;
+    while (editorElementLock){
+        sf::sleep(sf::microseconds(10));
+    }
+    editorElementLock = true;
+    while (gameplayElementLock){
+        sf::sleep(sf::microseconds(10));
+    }
+    gameplayElementLock = true;
+    ships.clear();
+    ships.emplace_back(editorParts, sf::Vector2f(setting::Resolution()) / 2.f);
+    editorElementLock = false;
+    gameplayElementLock = false;
+
+    return true;
 }
 
-void Ship::HandleUserInput(sf::Event& event) {
+#define MAX_SHIP_ROTATION_SPEED 1.2f
+#define MAX_SHIP_VELOCITY = 10.f
 
+void Ship::HandleUserInput() {
+
+    // acceleration
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+        speed.x += std::sin(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationFront;
+        speed.y -= std::cos(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationFront;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+        speed.x += std::cos(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationRight;
+        speed.y += std::sin(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationRight;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+        speed.x -= std::sin(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationBack;
+        speed.y += std::cos(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationBack;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+        speed.x -= std::cos(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationLeft;
+        speed.y -= std::sin(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationLeft;
+    }
+
+    // rotation
+    angularSpeed += (float(sf::Mouse::getPosition(window).x) - (float(setting::Resolution().x) / 2.f)) / float(setting::Resolution().x) * accelerationRotation * 100.f;
+    if (angularSpeed > MAX_SHIP_ROTATION_SPEED) {
+        angularSpeed = MAX_SHIP_ROTATION_SPEED;
+    }
+    else if (angularSpeed < -MAX_SHIP_ROTATION_SPEED) {
+        angularSpeed = -MAX_SHIP_ROTATION_SPEED;
+    }
+    coords = partSprites.front().getPosition() + speed / 60.f;
+    rotation += angularSpeed / 60.f;
+    rotation = std::fmod(rotation, 360.f);
+    std::cout << rotation << "  " << angularSpeed << "\n";
+    setRotation(rotation);
+    setPosition(coords);
 }
 
 void Ship::HandleAITick() {
 
 }
 
-void Ship::create(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
+Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
 
     sf::Vector2i lower = {100000, 100000};
     sf::Vector2i upper = {0, 0};
@@ -166,11 +219,8 @@ void Ship::create(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
     }
 
     sf::Vector2f width = sf::Vector2f(upper) - sf::Vector2f(lower) + sf::Vector2f(1, 1);
-    sf::Vector2f centerOffset = (sf::Vector2f(lower) + (width / 2.f)) * 32.f * setting::editorScale;
 
     partSprites.resize(parts.size());
-
-    std::cout << centerOffset.x << " " << centerOffset.y << "\n";
 
     for (unsigned int n = 0; n < parts.size(); n++) {
         parts[n].partPointer->setSprite(partSprites[n], uint8_t(parts[n].sprite.getRotation() / 90));
@@ -180,7 +230,56 @@ void Ship::create(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
         partSprites[n].setPosition(position);
     }
 
+    float thrustFront = 0;
+    float thrustRight = 0;
+    float thrustBack = 0;
+    float thrustLeft = 0;
+
     // parameters here
+    for (auto& n : parts) {
+        weight += n.partPointer->getWeight();
+        health += n.partPointer->getHealth();
+
+        switch (n.partPointer->type()) {
+
+            case PartType::engine:
+                drain += reinterpret_cast<ShipEngine*> (n.partPointer)->getDrain();
+                switch (int(n.sprite.getRotation() / 90)) {
+                    case 0:
+                        thrustFront += reinterpret_cast<ShipEngine*> (n.partPointer)->getThrust();
+                        break;
+                    case 1:
+                        thrustRight += reinterpret_cast<ShipEngine*> (n.partPointer)->getThrust();
+                        break;
+                    case 2:
+                        thrustBack += reinterpret_cast<ShipEngine*> (n.partPointer)->getThrust();
+                        break;
+                    case 3:
+                        thrustLeft += reinterpret_cast<ShipEngine*> (n.partPointer)->getThrust();
+                        break;
+                }
+                break;
+
+            case PartType::reactor:
+                power += reinterpret_cast<ShipReactor*> (n.partPointer)->getPower();
+                break;
+
+        }
+    }
+    accelerationFront = thrustFront / float(weight) / 60.f;
+    accelerationRight = thrustRight / float(weight) / 60.f;
+    accelerationBack = thrustBack / float(weight) / 60.f;
+    accelerationLeft = thrustLeft / float(weight) / 60.f;
+    accelerationRotation = float(power - drain) / float(power) / 1000000.f;
+    this->coords = position;
+    size = sf::Vector2f(width);
+
+    std::cout << "Created a ship with accelerations: " << accelerationFront << " " << accelerationRight << " " << accelerationBack << " " << accelerationLeft << "\n";
+    std::cout << "Mass: " << weight << "\n";
+    std::cout << "Power: " << power << "\n";
+    std::cout << "Drain: " << drain << "\n";
+    std::cout << "Health: " << health << "\n";
+    std::cout << "Rotation: " << accelerationRotation << "\n";
 }
 
 void Ship::draw(sf::RenderWindow& target) const{
@@ -192,5 +291,17 @@ void Ship::draw(sf::RenderWindow& target) const{
 void Ship::draw(sf::RenderTexture& target) const{
     for (auto& n : partSprites) {
         target.draw(n);
+    }
+}
+
+void Ship::setPosition(sf::Vector2f position) {
+    for (auto& n : partSprites) {
+        n.setPosition(position);
+    }
+}
+
+void Ship::setRotation(float rotation) {
+    for (auto& n : partSprites) {
+        n.setRotation(rotation);
     }
 }

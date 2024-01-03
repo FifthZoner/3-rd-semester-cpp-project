@@ -11,26 +11,31 @@ struct Ship {
     // weapons here
     unsigned int power = 0;
     unsigned int drain = 0;
-    unsigned int mass = 0;
+    unsigned int weight = 0;
+    unsigned int health = 0;
     float accelerationFront = 0.f;
     float accelerationBack = 0.f;
     float accelerationRight = 0.f;
     float accelerationLeft = 0.f;
-    sf::Vector2f speed = {0, 0};
-    //sf::RenderTexture shipTexture;
-    //sf::Sprite shipSprite;
+    float accelerationRotation = 0.f;
+    sf::Vector2f speed = {0.f, 0.f};
+    float angularSpeed = 0.f;
+    sf::Vector2f size = {0, 0};
+    sf::Vector2f coords = {0, 0};
+    float rotation = 0.f;
 
-    // returns nullptr if there was an error
-    static Ship* createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position);
-    void HandleUserInput(sf::Event& event);
+    static bool createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position);
+    void HandleUserInput();
     void HandleAITick();
-    Ship() = default;
-    void create(std::vector <EditorShipPart>& parts, sf::Vector2f position);
+    Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position);
     void draw(sf::RenderTexture& target) const;
     void draw(sf::RenderWindow& target) const;
+    void setPosition(sf::Vector2f position);
+    void setRotation(float rotation);
 };
 
 // index 0 is always the player ship
 inline std::vector <Ship> ships;
+
 
 #endif //INC_3_RD_SEMESTER_CPP_PROJECT_SHIP_HPP

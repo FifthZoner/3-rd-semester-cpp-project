@@ -8,6 +8,11 @@ private:
     uint16_t thrust = 0;
     uint16_t drain = 0;
 public:
+    uint16_t getThrust() const;
+
+    uint16_t getDrain() const;
+
+public:
     void create(std::string path) override;
     ShipEngine(std::string path);
     uint8_t type() override;
