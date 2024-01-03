@@ -25,9 +25,25 @@ Texturable::Texturable(){
 Texturable::~Texturable(){ 
 }
 
-void Texturable::setSprite(sf::Sprite& sprite){
+void Texturable::setSprite(sf::Sprite& sprite, uint8_t rotation){
     sprite.setTexture(GetMainTexture());
-    sprite.setTextureRect(*textureRect);
+    switch (rotation) {
+        case 0:
+            sprite.setTextureRect(*textureRect);
+            break;
+        case 1:
+            sprite.setTextureRect(sf::IntRect(textureRect->getPosition() + sf::Vector2i(32, 0), textureRect->getSize()));
+            break;
+        case 2:
+            sprite.setTextureRect(sf::IntRect(textureRect->getPosition() + sf::Vector2i(32, 32), textureRect->getSize()));
+            break;
+        case 3:
+            sprite.setTextureRect(sf::IntRect(textureRect->getPosition() + sf::Vector2i(0, 32), textureRect->getSize()));
+            break;
+        default:
+            sprite.setTextureRect(*textureRect);
+            break;
+    }
 }
 
 void Texturable::loadTextureStandalone(const std::string& path){

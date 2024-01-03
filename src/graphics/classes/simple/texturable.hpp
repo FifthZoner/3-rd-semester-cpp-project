@@ -27,7 +27,7 @@ public:
     void loadTextureStandalone(const std::string& path);
 
     // copies the rect data to given texture
-    void setSprite(sf::Sprite& sprite);
+    void setSprite(sf::Sprite& sprite, uint8_t rotation = 0);
 
     Texturable();
 

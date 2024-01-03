@@ -4,6 +4,6 @@
 
 void RenderGameplayGame(sf::RenderWindow& window) {
     for (auto& n : ships) {
-        n->draw(window);
+        n.draw(window);
     }
 }

@@ -36,16 +36,27 @@ void RunTexturePacking(){
         side++;
     }
 
-    mainTexture.create(side * 32, side * 32);
+    mainTexture.create(side * 64, side * 64);
     mainTexture.clear(sf::Color(0, 0, 0, 0));
     for (uint32_t n = 0; n < packingList.size(); n++){
         if (packingList[n].texture.loadFromFile(packingList[n].path)){
             packingList[n].sprite.setTexture(packingList[n].texture);
-            packingList[n].sprite.setPosition(32 * (n % side), 32 * floor(n / side));
+            packingList[n].sprite.setPosition(64 * (n % side), 64 * floor(n / side));
             mainTexture.draw(packingList[n].sprite);
+            packingList[n].sprite.rotate(90);
+            packingList[n].sprite.move(64, 0);
+            mainTexture.draw(packingList[n].sprite);
+            packingList[n].sprite.rotate(90);
+            packingList[n].sprite.move(0, 64);
+            mainTexture.draw(packingList[n].sprite);
+            packingList[n].sprite.rotate(90);
+            packingList[n].sprite.move(-64, 0);
+            mainTexture.draw(packingList[n].sprite);
+            packingList[n].sprite.rotate(90);
+            packingList[n].sprite.move(0, -64);
             packingList[n].path.clear();
         }
-        *packingList[n].rect = sf::IntRect(32 * (n % side), 32 * floor(n / side), 32, 32);
+        *packingList[n].rect = sf::IntRect(64 * (n % side), 64 * floor(n / side), 32, 32);
     }
 
     mainTexture.display();
