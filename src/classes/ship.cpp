@@ -7,6 +7,7 @@
 #include "graphics.hpp"
 #include "projectile.hpp"
 #include "aux.hpp"
+#include "collision.hpp"
 #include <cmath>
 
 void CheckShipConnection(std::vector <std::vector <uint8_t>>& checkArray, unsigned int x, unsigned int y) {
@@ -142,7 +143,7 @@ bool Ship::createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position
     }
     gameplayElementLock = true;
     ships.clear();
-    ships.emplace_back(editorParts, sf::Vector2f(setting::Resolution()) / 2.f);
+    ships.emplace_back(parts, position);
     editorElementLock = false;
     gameplayElementLock = false;
 
@@ -224,6 +225,12 @@ void Ship::HandleUserInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R)) {
         angularSpeed = 0.f;
     }
+
+    for (auto& n : asteroids) {
+        if (DoesCollide(n, *this)) {
+            std::cout << "Collides!\n";
+        }
+    }
 }
 
 void Ship::HandleAITick() {
@@ -261,8 +268,8 @@ Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
 
     for (unsigned int n = 0; n < parts.size(); n++) {
         parts[n].partPointer->setSprite(partSprites[n], uint8_t(parts[n].sprite.getRotation() / 90));
-        partSprites[n].setOrigin((partSprites[n].getLocalBounds().width / 2) - ((coords[n].x - float(lower.x) - (width.x / 2.f)) * 32),
-                                 (partSprites[n].getLocalBounds().height / 2) - ((coords[n].y - float(lower.y) - (width.y / 2.f)) * 32));
+        partSprites[n].setOrigin((partSprites[n].getLocalBounds().width / 2) - ((coords[n].x - float(lower.x) - (width.x / 2.f)) * 32 + 16),
+                                 (partSprites[n].getLocalBounds().height / 2) - ((coords[n].y - float(lower.y) - (width.y / 2.f)) * 32) - 16);
 
         partSprites[n].setPosition(position);
     }
@@ -315,7 +322,12 @@ Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
     accelerationLeft = thrustLeft / float(weight) * 1000.f;
     accelerationRotation = float(power - drain) / float(power) / 1000.f;
     this->coords = position;
-    size = sf::Vector2f(width);
+    if (width.x > width.y) {
+        collisionRadius = width.x * 16.f;
+    }
+    else {
+        collisionRadius = width.y * 16.f;
+    }
     maxHealth = health;
 
     //std::cout << "Created a ship with accelerations: " << accelerationFront << " " << accelerationRight << " " << accelerationBack << " " << accelerationLeft << "\n";

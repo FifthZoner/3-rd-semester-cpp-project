@@ -29,7 +29,7 @@ struct Ship {
     float accelerationRotation = 0.f;
     sf::Vector2f speed = {0.f, 0.f};
     float angularSpeed = 0.f;
-    sf::Vector2f size = {0, 0};
+    float collisionRadius = 0.f;
     sf::Vector2f coords = {0, 0};
     float rotation = 0.f;
 

@@ -9,7 +9,7 @@ inline volatile bool gameplayProjectileLock = false;
 
 void HandleGameplay();
 
-#define ASTEROID_COUNT 100
+#define ASTEROID_COUNT 20
 
 inline std::array <sf::Sprite, ASTEROID_COUNT> asteroids;
 

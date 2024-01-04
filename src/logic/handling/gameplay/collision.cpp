@@ -1,3 +1,5 @@
+#include <complex>
+#include <iostream>
 #include "collision.hpp"
 #include "aux.hpp"
 
@@ -8,20 +10,16 @@ inline bool DoesCollideGeneral(const sf::Vector2f& first, const sf::Vector2f& se
     return false;
 }
 
-inline float GetThisElipseRadius(Ship& ship, float rotation) {
-    return 0.f;
-}
-
 bool DoesCollide(sf::Sprite& first, Ship& second) {
-    return false;
+    return DoesCollideGeneral(first.getPosition(), second.coords, first.getScale().x * 16, second.collisionRadius);
 }
 
 bool DoesCollide(Ship& first, Ship& second) {
-    return false;
+    return DoesCollideGeneral(first.coords, second.coords, first.collisionRadius, second.collisionRadius);
 }
 
 bool DoesCollide(Projectile& first, Ship& second) {
-    return false;
+    return DoesCollideGeneral(first.sprite.getPosition(), second.coords, first.radius, second.collisionRadius);
 }
 
 bool DoesCollide(Projectile& first, sf::Sprite& second) {

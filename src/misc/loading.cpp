@@ -43,10 +43,10 @@ void LoadParts(DataContainer& data){
 
 std::array <Texturable, 4> asteroidTextures;
 
-#define ASTEROID_SAFE_AREA_SIZE 1000
-#define ASTEROID_AREA_SIZE 8000
-#define ASTEROID_MIN_SCALE 2
-#define ASTEROID_MAX_SCALE 20
+#define ASTEROID_SAFE_AREA_SIZE 800
+#define ASTEROID_AREA_SIZE 5000
+#define ASTEROID_MIN_SCALE 6
+#define ASTEROID_MAX_SCALE 24
 
 DataContainer LoadGame(){
 
@@ -81,15 +81,15 @@ DataContainer LoadGame(){
 
 
     for (auto& n : asteroids) {
-        asteroidTextures[distribution(engine)].setSprite(n);
+        asteroidTextures[distribution(engine)].setSprite(n, distribution(engine));
         n.setScale(float(asteroidScale(engine)) * sf::Vector2f(1, 1));
         n.setRotation(float(asteroidRotation(engine)));
-        n.setOrigin(n.getScale() * 16.f);
+        n.setOrigin(n.getLocalBounds().getSize() / 2.f);
         while (n.getPosition().x < ASTEROID_SAFE_AREA_SIZE and
                n.getPosition().y < ASTEROID_SAFE_AREA_SIZE and
                n.getPosition().y > -ASTEROID_SAFE_AREA_SIZE and
                n.getPosition().y > -ASTEROID_SAFE_AREA_SIZE) {
-            n.setPosition(float(asteroidPosition(engine)) - float(ASTEROID_AREA_SIZE / 2), float(asteroidPosition(engine) - float(ASTEROID_AREA_SIZE / 2)));
+            n.setPosition(float(asteroidPosition(engine)) - ASTEROID_AREA_SIZE / 2.f, float(asteroidPosition(engine)) - ASTEROID_AREA_SIZE / 2.f);
         }
 
     }
