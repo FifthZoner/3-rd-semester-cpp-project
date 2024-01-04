@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <random>
 
 namespace fs = std::filesystem;
 
@@ -8,6 +9,7 @@ namespace fs = std::filesystem;
 #include "../graphics/elements/editorRender.hpp"
 #include "settings.hpp"
 #include "../parts.hpp"
+#include "gameplayHandling.hpp"
 
 std::vector <std::vector <ShipPart*>> shipParts;
 
@@ -39,6 +41,13 @@ void LoadParts(DataContainer& data){
 
 }
 
+std::array <Texturable, 4> asteroidTextures;
+
+#define ASTEROID_SAFE_AREA_SIZE 1000
+#define ASTEROID_AREA_SIZE 8000
+#define ASTEROID_MIN_SCALE 2
+#define ASTEROID_MAX_SCALE 20
+
 DataContainer LoadGame(){
 
     DataContainer data;
@@ -53,8 +62,37 @@ DataContainer LoadGame(){
 
     RenderEditorPrepare();
 
+
+    // preparing asteroids
+    asteroidTextures[0].loadTextureStandalone("data/textures/asteroids/asteroid1.png");
+    asteroidTextures[1].loadTextureStandalone("data/textures/asteroids/asteroid2.png");
+    asteroidTextures[2].loadTextureStandalone("data/textures/asteroids/asteroid3.png");
+    asteroidTextures[3].loadTextureStandalone("data/textures/asteroids/asteroid4.png");
+
     // packer must be after ALL texture loading, remember that in the future please - myself
     RunTexturePacking();
+
+    std::random_device random;
+    std::default_random_engine engine{random()};
+    std::uniform_int_distribution<int> distribution{0, 3};
+    std::uniform_int_distribution<int> asteroidPosition{0, ASTEROID_AREA_SIZE};
+    std::uniform_int_distribution<int> asteroidScale{ASTEROID_MIN_SCALE, ASTEROID_MAX_SCALE};
+    std::uniform_int_distribution<int> asteroidRotation{0, 360};
+
+
+    for (auto& n : asteroids) {
+        asteroidTextures[distribution(engine)].setSprite(n);
+        n.setScale(float(asteroidScale(engine)) * sf::Vector2f(1, 1));
+        n.setRotation(float(asteroidRotation(engine)));
+        n.setOrigin(n.getScale() * 16.f);
+        while (n.getPosition().x < ASTEROID_SAFE_AREA_SIZE and
+               n.getPosition().y < ASTEROID_SAFE_AREA_SIZE and
+               n.getPosition().y > -ASTEROID_SAFE_AREA_SIZE and
+               n.getPosition().y > -ASTEROID_SAFE_AREA_SIZE) {
+            n.setPosition(float(asteroidPosition(engine)) - float(ASTEROID_AREA_SIZE / 2), float(asteroidPosition(engine) - float(ASTEROID_AREA_SIZE / 2)));
+        }
+
+    }
 
     // other checks
     if (setting::Resolution().x > 1280 and setting::Resolution().y > 720) {

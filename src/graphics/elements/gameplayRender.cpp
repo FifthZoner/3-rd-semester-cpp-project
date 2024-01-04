@@ -6,6 +6,10 @@
 
 void RenderGameplayGame(sf::RenderWindow& window) {
 
+    for (auto& n : asteroids) {
+        window.draw(n);
+    }
+
     while (gameplayProjectileLock){
         sf::sleep(sf::microseconds(5));
     }

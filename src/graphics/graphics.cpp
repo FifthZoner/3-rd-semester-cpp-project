@@ -1,10 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <cstdlib>
+#include <array>
 
 #include "graphics.hpp"
 #include "../misc/settings.hpp"
 #include "../misc/misc.hpp"
+#include "graphicsLib.hpp"
+
 
 sf::View view;
 
@@ -17,7 +20,7 @@ std::string GetWindowName(){
         return "I'm a generic name!";
     }
     else {
-        srand(time(NULL));
+        srand(time(nullptr));
         return vec[rand() % vec.size()];
     }
 }
@@ -34,6 +37,7 @@ void PrepareGraphics(){
     backgroundTexture.loadFromFile("data/textures/spaceBackground.jpg");
     backgroundSprite.setTexture(backgroundTexture);
     backgroundSprite.setOrigin(backgroundSprite.getGlobalBounds().getSize() / 2.f);
+
 }
 
 #include "elements/elements.hpp"

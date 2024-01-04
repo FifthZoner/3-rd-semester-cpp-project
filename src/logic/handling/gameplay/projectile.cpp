@@ -14,6 +14,7 @@ Projectile::Projectile(sf::Vector2f position, float rotation, ShipWeapon* origin
     sprite.setPosition(position);
     sprite.setRotation(rotation);
     startingPoint = position;
+    radius = origin->getProjectileWidth() / 2;
 }
 
 // returns true if it needs to be deleted

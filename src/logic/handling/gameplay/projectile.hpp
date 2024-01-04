@@ -6,6 +6,7 @@
 
 struct Projectile {
     Texturable* projectilePointer;
+    unsigned int radius = 0;
     sf::Sprite sprite;
     sf::Vector2f startingPoint = {0.f, 0.f};
     sf::Vector2f speed = {0.f, 0.f};
