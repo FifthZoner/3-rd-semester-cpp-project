@@ -13,7 +13,7 @@ std::vector <std::vector <ShipPart*>> shipParts;
 
 void LoadParts(DataContainer& data){
 
-    shipParts.resize(4);
+    shipParts.resize(5);
 
     // structurals
     for (auto& entry : fs::directory_iterator("data/parts/structural/")){
@@ -30,6 +30,10 @@ void LoadParts(DataContainer& data){
     // reactors
     for (auto& entry : fs::directory_iterator("data/parts/reactors/")){
         shipParts[3].push_back(new ShipReactor(entry.path().string()));
+    }
+    // weapons
+    for (auto& entry : fs::directory_iterator("data/parts/weapons/")){
+        shipParts[4].push_back(new ShipWeapon(entry.path().string()));
     }
 
 

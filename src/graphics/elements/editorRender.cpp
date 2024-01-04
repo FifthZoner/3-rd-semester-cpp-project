@@ -34,6 +34,11 @@ void RenderEditorPrepare(){
                                  setting::EditorBorderColor(), 6, GetMainFont(), "REACTORS",
                                  setting::EditorTextColor(), setting::EditorTextSize());
 
+    frameEditorWeaponText.create(sf::Vector2f(144, 48), sf::Vector2f(48, 0), setting::EditorBackgroundColor(),
+                                  setting::EditorBorderColor(), 6, GetMainFont(), "WEAPONS",
+                                  setting::EditorTextColor(), setting::EditorTextSize());
+
+
     frameEditorTopBar.create(sf::Vector2f(setting::Resolution().x - 336, 48), sf::Vector2f(240, 0), setting::GetUIStyle()); 
 
     scrollListEditorElements.create(shipParts, setting::GetUIStyle(), 
@@ -79,6 +84,10 @@ void RenderEditorList(sf::RenderWindow& window){
         case 3:
             // reactors
             frameEditorReactorText.draw(window);
+            break;
+        case 4:
+            // weapons
+            frameEditorWeaponText.draw(window);
             break;
         default:
             break;

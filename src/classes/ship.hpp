@@ -7,12 +7,20 @@
 #include "editorShipPart.hpp"
 
 struct Ship {
+    struct WeaponContainer {
+        ShipWeapon* pointer;
+        
+    };
+
+    std::vector <WeaponContainer> weapons;
+
     std::vector <sf::Sprite> partSprites;
     // weapons here
     unsigned int power = 0;
     unsigned int drain = 0;
     unsigned int weight = 0;
     unsigned int health = 0;
+    unsigned int maxHealth = 0;
     float accelerationFront = 0.f;
     float accelerationBack = 0.f;
     float accelerationRight = 0.f;

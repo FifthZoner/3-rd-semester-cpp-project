@@ -7,6 +7,24 @@ class ShipWeapon : public ShipPart {
 private:
     uint16_t drain = 0;
     float projectileSpread = 0.f;
+public:
+    [[nodiscard]] uint16_t getDrain() const;
+
+    [[nodiscard]] float getProjectileSpread() const;
+
+    [[nodiscard]] float getProjectileScale() const;
+
+    [[nodiscard]] float getProjectileSpeed() const;
+
+    [[nodiscard]] float getProjectileWidth() const;
+
+    [[nodiscard]] unsigned int getProjectileDamage() const;
+
+    [[nodiscard]] unsigned int getReloadTime() const;
+
+    [[nodiscard]] Texturable &getProjectile();
+
+private:
     float projectileScale = 1.f;
     float projectileSpeed = 0.f;
     float projectileWidth = 1.f;

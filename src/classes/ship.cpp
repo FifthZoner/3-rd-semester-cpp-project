@@ -272,13 +272,14 @@ Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
     accelerationRotation = float(power - drain) / float(power) / 1000000.f;
     this->coords = position;
     size = sf::Vector2f(width);
+    maxHealth = health;
 
-    std::cout << "Created a ship with accelerations: " << accelerationFront << " " << accelerationRight << " " << accelerationBack << " " << accelerationLeft << "\n";
-    std::cout << "Mass: " << weight << "\n";
-    std::cout << "Power: " << power << "\n";
-    std::cout << "Drain: " << drain << "\n";
-    std::cout << "Health: " << health << "\n";
-    std::cout << "Rotation: " << accelerationRotation << "\n";
+    //std::cout << "Created a ship with accelerations: " << accelerationFront << " " << accelerationRight << " " << accelerationBack << " " << accelerationLeft << "\n";
+    //std::cout << "Mass: " << weight << "\n";
+    //std::cout << "Power: " << power << "\n";
+    //std::cout << "Drain: " << drain << "\n";
+    //std::cout << "Health: " << health << "\n";
+    //std::cout << "Rotation: " << accelerationRotation << "\n";
 }
 
 void Ship::draw(sf::RenderWindow& target) const{

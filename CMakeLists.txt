@@ -36,7 +36,9 @@ add_executable(3_rd_semester_cpp_project ${3_rd_semester_cpp_project_SOURCES}
         src/graphics/elements/gameplayRender.cpp
         src/logic/handling/gameplay/gameplayHandling.cpp
         src/classes/partTypes/weapon.hpp
-        src/classes/partTypes/weapon.cpp)
+        src/classes/partTypes/weapon.cpp
+        src/logic/handling/gameplay/projectile.hpp
+        src/logic/handling/gameplay/projectile.cpp)
 
 target_compile_features(3_rd_semester_cpp_project PRIVATE cxx_std_23)
 target_link_libraries(3_rd_semester_cpp_project PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network Xrandr)

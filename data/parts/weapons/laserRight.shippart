@@ -9,12 +9,12 @@ projectile "data/textures/parts/projectiles/laserProjectile.png"
 spread 0.05
 scale 1.0
 speed 300.0
-width 6.0;
+width 6.0
 damage 4
 reload 20
 # Points: present/none/restricted
-front present
-right present
+front restricted
+right none
 back present
 left present
 # Graphics

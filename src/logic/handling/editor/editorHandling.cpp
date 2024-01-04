@@ -61,7 +61,7 @@ void HandleEditorReleased() {
 
         case EditorClickables::start:
             if (buttonEditorStart.checkClick(sf::Vector2i(events.front().mouseButton.x, events.front().mouseButton.y))){
-                if (Ship::createShip(editorParts, sf::Vector2f(setting::Resolution()) / 2.f)) {
+                if (Ship::createShip(editorParts, sf::Vector2f(0, 0))) {
                     while (editorElementLock){
                         sf::sleep(sf::microseconds(10));
                     }
