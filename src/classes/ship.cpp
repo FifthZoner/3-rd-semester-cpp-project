@@ -5,6 +5,8 @@
 #include "editorHandling.hpp"
 #include "gameplayHandling.hpp"
 #include "graphics.hpp"
+#include "projectile.hpp"
+#include "aux.hpp"
 #include <cmath>
 
 void CheckShipConnection(std::vector <std::vector <uint8_t>>& checkArray, unsigned int x, unsigned int y) {
@@ -147,30 +149,37 @@ bool Ship::createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position
     return true;
 }
 
-#define MAX_SHIP_ROTATION_SPEED 1.2f
-#define MAX_SHIP_VELOCITY = 10.f
+#define MAX_SHIP_ROTATION_SPEED 2.4f
+#define MAX_SHIP_VELOCITY 600.f
 
 void Ship::HandleUserInput() {
 
+    sf::Vector2f tempSpeed = speed;
+
     // acceleration
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        speed.x += std::sin(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationFront;
-        speed.y -= std::cos(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationFront;
+        speed.x += std::sin(partSprites.front().getRotation() * 0.017452778f) * accelerationFront;
+        speed.y -= std::cos(partSprites.front().getRotation() * 0.017452778f) * accelerationFront;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        speed.x += std::cos(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationRight;
-        speed.y += std::sin(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationRight;
+        speed.x += std::cos(partSprites.front().getRotation() * 0.017452778f) * accelerationRight;
+        speed.y += std::sin(partSprites.front().getRotation() * 0.017452778f) * accelerationRight;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        speed.x -= std::sin(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationBack;
-        speed.y += std::cos(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationBack;
+        speed.x -= std::sin(partSprites.front().getRotation() * 0.017452778f) * accelerationBack;
+        speed.y += std::cos(partSprites.front().getRotation() * 0.017452778f) * accelerationBack;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        speed.x -= std::cos(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationLeft;
-        speed.y -= std::sin(partSprites.front().getRotation() / (2.f * 3.1415f)) * accelerationLeft;
+        speed.x -= std::cos(partSprites.front().getRotation() * 0.017452778f) * accelerationLeft;
+        speed.y -= std::sin(partSprites.front().getRotation() * 0.017452778f) * accelerationLeft;
+    }
+
+    // speed limit enforcement
+    if (GetDistance(sf::Vector2f(0, 0), speed) > MAX_SHIP_VELOCITY) {
+        speed = tempSpeed;
     }
 
     // rotation
@@ -182,10 +191,39 @@ void Ship::HandleUserInput() {
         angularSpeed = -MAX_SHIP_ROTATION_SPEED;
     }
     coords = partSprites.front().getPosition() + speed / 60.f;
-    rotation += angularSpeed / 60.f;
+    rotation += angularSpeed;
     rotation = std::fmod(rotation, 360.f);
     setRotation(rotation);
     setPosition(coords);
+
+    // shooting
+    for (auto& n : weapons) {
+        if (n.reloadLeft > 0) {
+            n.reloadLeft--;
+        }
+        else if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+            // shot
+            sf::Vector2f offset = n.spritePointer->getOrigin() - sf::Vector2f(16.f, 16.f);
+            float distance = GetDistance(offset, {0.f,0.f});
+            float angle = std::asin(-offset.x / distance);
+            if (offset.y < 0.f) {
+                angle = 3.1415f - angle;
+            }
+            angle += rotation * 0.017452778f;
+            offset.x = std::sin(angle) * distance;
+            offset.y = -std::cos(angle) * distance;
+            AddProjectile(offset + coords, rotation, n.partPointer);
+            n.reloadLeft = n.partPointer->getReloadTime();
+        }
+    }
+
+    // debug shortcuts
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::V)) {
+        speed = {0.f, 0.f};
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R)) {
+        angularSpeed = 0.f;
+    }
 }
 
 void Ship::HandleAITick() {
@@ -235,41 +273,47 @@ Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
     float thrustLeft = 0;
 
     // parameters here
-    for (auto& n : parts) {
-        weight += n.partPointer->getWeight();
-        health += n.partPointer->getHealth();
+    for (unsigned int n = 0; n < parts.size(); n++) {
+        weight += parts[n].partPointer->getWeight();
+        health += parts[n].partPointer->getHealth();
 
-        switch (n.partPointer->type()) {
+        switch (parts[n].partPointer->type()) {
 
             case PartType::engine:
-                drain += reinterpret_cast<ShipEngine*> (n.partPointer)->getDrain();
-                switch (int(n.sprite.getRotation() / 90)) {
+                drain += reinterpret_cast<ShipEngine*> (parts[n].partPointer)->getDrain();
+                switch (int(parts[n].sprite.getRotation() / 90)) {
                     case 0:
-                        thrustFront += reinterpret_cast<ShipEngine*> (n.partPointer)->getThrust();
+                        thrustFront += reinterpret_cast<ShipEngine*> (parts[n].partPointer)->getThrust();
                         break;
                     case 1:
-                        thrustRight += reinterpret_cast<ShipEngine*> (n.partPointer)->getThrust();
+                        thrustRight += reinterpret_cast<ShipEngine*> (parts[n].partPointer)->getThrust();
                         break;
                     case 2:
-                        thrustBack += reinterpret_cast<ShipEngine*> (n.partPointer)->getThrust();
+                        thrustBack += reinterpret_cast<ShipEngine*> (parts[n].partPointer)->getThrust();
                         break;
                     case 3:
-                        thrustLeft += reinterpret_cast<ShipEngine*> (n.partPointer)->getThrust();
+                        thrustLeft += reinterpret_cast<ShipEngine*> (parts[n].partPointer)->getThrust();
                         break;
                 }
                 break;
 
             case PartType::reactor:
-                power += reinterpret_cast<ShipReactor*> (n.partPointer)->getPower();
+                power += reinterpret_cast<ShipReactor*> (parts[n].partPointer)->getPower();
+                break;
+
+            case PartType::weapon:
+                weapons.emplace_back();
+                weapons.back().partPointer = reinterpret_cast<ShipWeapon*> (parts[n].partPointer);
+                weapons.back().spritePointer = &partSprites[n];
                 break;
 
         }
     }
-    accelerationFront = thrustFront / float(weight) / 60.f;
-    accelerationRight = thrustRight / float(weight) / 60.f;
-    accelerationBack = thrustBack / float(weight) / 60.f;
-    accelerationLeft = thrustLeft / float(weight) / 60.f;
-    accelerationRotation = float(power - drain) / float(power) / 1000000.f;
+    accelerationFront = thrustFront / float(weight) * 1000.f;
+    accelerationRight = thrustRight / float(weight) * 1000.f;
+    accelerationBack = thrustBack / float(weight) * 1000.f;
+    accelerationLeft = thrustLeft / float(weight) * 1000.f;
+    accelerationRotation = float(power - drain) / float(power) / 1000.f;
     this->coords = position;
     size = sf::Vector2f(width);
     maxHealth = health;

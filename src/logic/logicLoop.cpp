@@ -8,7 +8,7 @@
 #include "../graphics/graphics.hpp"
 #include "gameplayHandling.hpp"
 
-#define TICKRATE 60.0
+#define TICK_RATE 60
 
 extern std::queue<sf::Event> events;
 
@@ -19,16 +19,16 @@ void logicLoop(){
 
     logicVector.emplace_back(LogicStage::editor, true);
 
-    double tickTime = 1000000 / TICKRATE;
+    long long tickTime = 1000000 / TICK_RATE;
     sf::Clock tickClock;
 
 
     while(setting::IsRunning()){
 
-        if (tickClock.getElapsedTime().asMicroseconds() < tickTime){
+        while (tickClock.getElapsedTime().asMicroseconds() < tickTime){
             sf::sleep(sf::microseconds(10));
-            continue;
         }
+        tickClock.restart();
         for (long n = logicVector.size() - 1; n > -1; n--){
             switch (logicVector[n].type){
                 case LogicStage::editor:

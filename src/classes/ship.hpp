@@ -8,8 +8,9 @@
 
 struct Ship {
     struct WeaponContainer {
-        ShipWeapon* pointer;
-        
+        ShipWeapon* partPointer;
+        sf::Sprite* spritePointer;
+        unsigned int reloadLeft = 0;
     };
 
     std::vector <WeaponContainer> weapons;
