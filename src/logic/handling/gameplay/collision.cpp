@@ -29,10 +29,27 @@ bool DoesCollide(Projectile& first, sf::Sprite& second) {
 
 void HandleCollisions() {
     // ship to asteroid
-    for (auto& n : ships) {
+    for (unsigned int n = 0; n < ships.size(); n++) {
         for (auto& m : asteroids) {
-            if (DoesCollide(m, n)) {
-                // damage and bounce back
+            if (DoesCollide(m, ships[n])) {
+                sf::Vector2f i = m.getPosition() - ships[n].coords;
+                float betaPlusGamma = std::asin(i.x / std::sqrt(i.x * i.x + i.y * i.y));
+                if (i.y > 0.f) {
+                    betaPlusGamma = 3.1415f - betaPlusGamma;
+                }
+
+                float beta = std::asin(ships[n].speed.x / std::sqrt(ships[n].speed.x * ships[n].speed.x + ships[n].speed.y * ships[n].speed.y));
+                if (ships[n].speed.y > 0.f) {
+                    beta = 3.1415f - beta;
+                }
+
+                float impactSpeed = std::cos(betaPlusGamma - beta) * GetDistance(sf::Vector2f(0, 0), ships[n].speed);
+                sf::Vector2f impactVector = {std::sin(betaPlusGamma) * impactSpeed, -std::cos(betaPlusGamma) * impactSpeed};
+                ships[n].speed -= impactVector * 1.5f;
+                ships[n].coords = ships[n].coords - (sf::Vector2f(std::sin(betaPlusGamma), -std::cos(betaPlusGamma)) * 5.f);
+                ships[n].setPosition(ships[n].coords);
+
+                DealDamageToShip(int(std::floor(impactSpeed / 50.f)), n);
             }
         }
     }
@@ -42,6 +59,50 @@ void HandleCollisions() {
         for (unsigned int m = n + 1; m < ships.size(); m++) {
             if (DoesCollide(ships[n], ships[m])) {
                 // damage and bounce back
+
+                // first ship
+                {
+                    sf::Vector2f i = ships[m].coords - ships[n].coords;
+                    float betaPlusGamma = std::asin(i.x / std::sqrt(i.x * i.x + i.y * i.y));
+                    if (i.y > 0.f) {
+                        betaPlusGamma = 3.1415f - betaPlusGamma;
+                    }
+
+                    float beta = std::asin(ships[n].speed.x / std::sqrt(ships[n].speed.x * ships[n].speed.x + ships[n].speed.y * ships[n].speed.y));
+                    if (ships[n].speed.y > 0.f) {
+                        beta = 3.1415f - beta;
+                    }
+
+                    float impactSpeed = std::cos(betaPlusGamma - beta) * GetDistance(sf::Vector2f(0, 0), ships[n].speed);
+                    sf::Vector2f impactVector = {std::sin(betaPlusGamma) * impactSpeed, -std::cos(betaPlusGamma) * impactSpeed};
+                    ships[n].speed -= impactVector * 1.5f;
+                    ships[n].coords = ships[n].coords - (sf::Vector2f(std::sin(betaPlusGamma), -std::cos(betaPlusGamma)) * 5.f);
+                    ships[n].setPosition(ships[n].coords);
+
+                    DealDamageToShip(int(std::floor(impactSpeed / 50.f)), n);
+                }
+
+                // second ship
+                {
+                    sf::Vector2f i = ships[n].coords - ships[m].coords;
+                    float betaPlusGamma = std::asin(i.x / std::sqrt(i.x * i.x + i.y * i.y));
+                    if (i.y > 0.f) {
+                        betaPlusGamma = 3.1415f - betaPlusGamma;
+                    }
+
+                    float beta = std::asin(ships[m].speed.x / std::sqrt(ships[m].speed.x * ships[m].speed.x + ships[m].speed.y * ships[m].speed.y));
+                    if (ships[m].speed.y > 0.f) {
+                        beta = 3.1415f - beta;
+                    }
+
+                    float impactSpeed = std::cos(betaPlusGamma - beta) * GetDistance(sf::Vector2f(0, 0), ships[m].speed);
+                    sf::Vector2f impactVector = {std::sin(betaPlusGamma) * impactSpeed, -std::cos(betaPlusGamma) * impactSpeed};
+                    ships[m].speed -= impactVector * 1.5f;
+                    ships[m].coords = ships[m].coords - (sf::Vector2f(std::sin(betaPlusGamma), -std::cos(betaPlusGamma)) * 5.f);
+                    ships[m].setPosition(ships[m].coords);
+
+                    DealDamageToShip(int(std::floor(impactSpeed / 50.f)), m);
+                }
             }
         }
     }

@@ -80,6 +80,10 @@ void Render(){
 
     window.clear();
 
+    window.draw(backgroundSprite);
+
+    RenderElements();
+
     if (!logicVector.empty() and logicVector.front().type == LogicStage::game) {
         view.setCenter(*gameplayCameraPosition);
         view.setRotation(*gameplayCameraRotation);
@@ -93,10 +97,6 @@ void Render(){
 
     // off for testing
     window.setView(view);
-
-    window.draw(backgroundSprite);
-
-    RenderElements();
 
     window.display();
 }

@@ -191,7 +191,7 @@ void Ship::HandleUserInput() {
     else if (angularSpeed < -MAX_SHIP_ROTATION_SPEED) {
         angularSpeed = -MAX_SHIP_ROTATION_SPEED;
     }
-    coords = partSprites.front().getPosition() + speed / 60.f;
+    coords = coords + speed / 60.f;
     rotation += angularSpeed;
     rotation = std::fmod(rotation, 360.f);
     setRotation(rotation);
@@ -224,6 +224,9 @@ void Ship::HandleUserInput() {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R)) {
         angularSpeed = 0.f;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+        coords = {0.f, 0.f};
     }
 }
 
@@ -332,32 +335,52 @@ Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
     //std::cout << "Rotation: " << accelerationRotation << "\n";
 }
 
-void Ship::draw(sf::RenderWindow& target) const{
+void Ship::draw(sf::RenderWindow& target) {
+    while (shipDrawLock){
+        sf::sleep(sf::microseconds(10));
+    }
+    shipDrawLock = true;
     for (auto& n : partSprites) {
         target.draw(n);
     }
+    shipDrawLock = false;
 }
 
-void Ship::draw(sf::RenderTexture& target) const{
+void Ship::draw(sf::RenderTexture& target) {
+    while (shipDrawLock){
+        sf::sleep(sf::microseconds(10));
+    }
+    shipDrawLock = true;
     for (auto& n : partSprites) {
         target.draw(n);
     }
+    shipDrawLock = false;
 }
 
 void Ship::setPosition(sf::Vector2f position) {
+    while (shipDrawLock){
+        sf::sleep(sf::microseconds(10));
+    }
+    shipDrawLock = true;
     for (auto& n : partSprites) {
         n.setPosition(position);
     }
+    shipDrawLock = false;
 }
 
 void Ship::setRotation(float rotation) {
+    while (shipDrawLock){
+        sf::sleep(sf::microseconds(10));
+    }
+    shipDrawLock = true;
     for (auto& n : partSprites) {
         n.setRotation(rotation);
     }
+    shipDrawLock = false;
 }
 
 void DealDamageToShip(int damage, unsigned int index) {
-    std::cout << damage << " given to ship with health of " << ships[index].health << " / " << ships[index].maxHealth << "\n";
+    //std::cout << damage << " given to ship with health of " << ships[index].health << " / " << ships[index].maxHealth << "\n";
 
     ships[index].health -= damage;
     if (ships[index].health <= 0) {

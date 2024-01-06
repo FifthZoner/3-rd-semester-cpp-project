@@ -33,12 +33,14 @@ struct Ship {
     sf::Vector2f coords = {0, 0};
     float rotation = 0.f;
 
+    volatile bool shipDrawLock = false;
+
     static bool createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position);
     void HandleUserInput();
     void HandleAITick();
     Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position);
-    void draw(sf::RenderTexture& target) const;
-    void draw(sf::RenderWindow& target) const;
+    void draw(sf::RenderTexture& target);
+    void draw(sf::RenderWindow& target);
     void setPosition(sf::Vector2f position);
     void setRotation(float rotation);
 };

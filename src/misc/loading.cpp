@@ -67,7 +67,7 @@ DataContainer LoadGame(){
     gameOverText.setFont(GetMainFont());
     gameOverText.setCharacterSize(80);
     gameOverText.setOutlineColor(sf::Color::Black);
-    gameOverText.setOutlineThickness(5);
+    gameOverText.setOutlineThickness(10);
     gameOverText.setFillColor(sf::Color::White);
     gameOverText.setString("GAME OVER");
     gameOverText.setPosition(sf::Vector2f(setting::Resolution() / 2));
