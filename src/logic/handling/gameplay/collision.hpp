@@ -10,4 +10,6 @@ bool DoesCollide(Ship& first, Ship& second);
 bool DoesCollide(Projectile& first, Ship& second);
 bool DoesCollide(Projectile& first, sf::Sprite& second);
 
+void HandleCollisions();
+
 #endif //INC_3_RD_SEMESTER_CPP_PROJECT_COLLISION_HPP

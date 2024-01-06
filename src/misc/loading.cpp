@@ -10,6 +10,7 @@ namespace fs = std::filesystem;
 #include "settings.hpp"
 #include "../parts.hpp"
 #include "gameplayHandling.hpp"
+#include "gameOverRenderer.hpp"
 
 std::vector <std::vector <ShipPart*>> shipParts;
 
@@ -62,8 +63,19 @@ DataContainer LoadGame(){
 
     RenderEditorPrepare();
 
+    // game over screen
+    gameOverText.setFont(GetMainFont());
+    gameOverText.setCharacterSize(80);
+    gameOverText.setOutlineColor(sf::Color::Black);
+    gameOverText.setOutlineThickness(5);
+    gameOverText.setFillColor(sf::Color::White);
+    gameOverText.setString("GAME OVER");
+    gameOverText.setPosition(sf::Vector2f(setting::Resolution() / 2));
+    gameOverText.setOrigin(gameOverText.getLocalBounds().width / 2 + gameOverText.getLocalBounds().left,
+                           gameOverText.getLocalBounds().top + gameOverText.getLocalBounds().height / 2);
 
-    // preparing asteroids
+
+            // preparing asteroids
     asteroidTextures[0].loadTextureStandalone("data/textures/asteroids/asteroid1.png");
     asteroidTextures[1].loadTextureStandalone("data/textures/asteroids/asteroid2.png");
     asteroidTextures[2].loadTextureStandalone("data/textures/asteroids/asteroid3.png");

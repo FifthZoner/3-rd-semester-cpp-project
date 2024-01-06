@@ -7,6 +7,7 @@
 #include "../misc/settings.hpp"
 #include "../graphics/graphics.hpp"
 #include "gameplayHandling.hpp"
+#include "gameOverHandling.hpp"
 
 #define TICK_RATE 60
 
@@ -37,17 +38,12 @@ void logicLoop(){
                 case LogicStage::game:
                     HandleGameplay();
                     break;
+                case LogicStage::gameOver:
+                    HandleGameOver();
+                    break;
                 default:
                     break;
             }
         }
-
-
-        // handling other things
-
-
     }
-
-    // getting rid of things
-
 }

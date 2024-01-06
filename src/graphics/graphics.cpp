@@ -43,6 +43,7 @@ void PrepareGraphics(){
 #include "elements/elements.hpp"
 #include "gameplayRender.hpp"
 #include "logicLoop.hpp"
+#include "gameOverRenderer.hpp"
 
 inline void RenderElements(){
     for (auto current : renderVector){
@@ -55,6 +56,9 @@ inline void RenderElements(){
             break;
         case Element::gameplayGame:
             RenderGameplayGame(window);
+            break;
+        case Element::gameOver:
+            RenderGameOver(window);
             break;
         default:
             break;

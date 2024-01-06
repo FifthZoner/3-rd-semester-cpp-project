@@ -11,7 +11,7 @@ struct LogicStage{
     LogicStage(uint8_t type, bool isBlocking);
 
     enum {
-        editor, game
+        editor, game, gameOver
     };
 };
 

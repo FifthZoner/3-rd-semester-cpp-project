@@ -17,7 +17,7 @@ void PrepareGraphics();
 void Render();
 
 enum Element {
-    editorMain, editorListStructural, gameplayGame
+    editorMain, editorListStructural, gameplayGame, gameOver
 };
 
 #endif

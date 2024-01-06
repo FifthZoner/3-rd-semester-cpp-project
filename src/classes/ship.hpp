@@ -20,8 +20,8 @@ struct Ship {
     unsigned int power = 0;
     unsigned int drain = 0;
     unsigned int weight = 0;
-    unsigned int health = 0;
-    unsigned int maxHealth = 0;
+    int health = 0;
+    int maxHealth = 0;
     float accelerationFront = 0.f;
     float accelerationBack = 0.f;
     float accelerationRight = 0.f;
@@ -46,5 +46,6 @@ struct Ship {
 // index 0 is always the player ship
 inline std::vector <Ship> ships;
 
+void DealDamageToShip(int damage, unsigned int index);
 
 #endif //INC_3_RD_SEMESTER_CPP_PROJECT_SHIP_HPP

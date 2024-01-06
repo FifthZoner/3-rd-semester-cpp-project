@@ -8,6 +8,7 @@
 #include "projectile.hpp"
 #include "aux.hpp"
 #include "collision.hpp"
+#include "logicLoop.hpp"
 #include <cmath>
 
 void CheckShipConnection(std::vector <std::vector <uint8_t>>& checkArray, unsigned int x, unsigned int y) {
@@ -142,7 +143,6 @@ bool Ship::createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position
         sf::sleep(sf::microseconds(10));
     }
     gameplayElementLock = true;
-    ships.clear();
     ships.emplace_back(parts, position);
     editorElementLock = false;
     gameplayElementLock = false;
@@ -224,12 +224,6 @@ void Ship::HandleUserInput() {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R)) {
         angularSpeed = 0.f;
-    }
-
-    for (auto& n : asteroids) {
-        if (DoesCollide(n, *this)) {
-            std::cout << "Collides!\n";
-        }
     }
 }
 
@@ -359,5 +353,28 @@ void Ship::setPosition(sf::Vector2f position) {
 void Ship::setRotation(float rotation) {
     for (auto& n : partSprites) {
         n.setRotation(rotation);
+    }
+}
+
+void DealDamageToShip(int damage, unsigned int index) {
+    std::cout << damage << " given to ship with health of " << ships[index].health << " / " << ships[index].maxHealth << "\n";
+
+    ships[index].health -= damage;
+    if (ships[index].health <= 0) {
+        if (index == 0) {
+            // game over!
+            logicVector.clear();
+            logicVector.emplace_back(LogicStage::gameOver, true);
+            renderVector.clear();
+            renderVector.push_back(Element::gameOver);
+            return;
+        }
+
+        while (gameplayElementLock){
+            sf::sleep(sf::microseconds(10));
+        }
+        gameplayElementLock = true;
+        ships.erase(ships.begin() + index);
+        gameplayElementLock = false;
     }
 }
