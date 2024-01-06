@@ -44,6 +44,7 @@ void PrepareGraphics(){
 #include "gameplayRender.hpp"
 #include "logicLoop.hpp"
 #include "gameOverRenderer.hpp"
+#include "ship.hpp"
 
 inline void RenderElements(){
     for (auto current : renderVector){
@@ -85,9 +86,9 @@ void Render(){
     RenderElements();
 
     if (!logicVector.empty() and logicVector.front().type == LogicStage::game) {
-        view.setCenter(*gameplayCameraPosition);
-        view.setRotation(*gameplayCameraRotation);
-        backgroundSprite.setPosition(*gameplayCameraPosition);
+        view.setCenter(ships.front().coords);
+        view.setRotation(ships.front().rotation);
+        backgroundSprite.setPosition(ships.front().coords);
     }
     else {
         view.setCenter(sf::Vector2f(setting::Resolution()) / 2.f);

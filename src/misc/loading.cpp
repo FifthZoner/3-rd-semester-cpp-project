@@ -11,8 +11,7 @@ namespace fs = std::filesystem;
 #include "../parts.hpp"
 #include "gameplayHandling.hpp"
 #include "gameOverRenderer.hpp"
-
-std::vector <std::vector <ShipPart*>> shipParts;
+#include "ship.hpp"
 
 void LoadParts(DataContainer& data){
 
@@ -39,13 +38,52 @@ void LoadParts(DataContainer& data){
         shipParts[4].push_back(new ShipWeapon(entry.path().string()));
     }
 
+}
 
+sf::Vector2f ScaledCoords(float x, float y) {
+    return sf::Vector2f(x, y) * 32.f * setting::editorScale;
+}
+
+void LoadShipTemplates() {
+
+    //          C
+    //      W E R E W
+    //      S S R S S
+    //      E S S S E
+    //      S E E E S
+
+    // cockpit
+    shipTemplates[0].emplace_back(shipParts[1][0], ScaledCoords(3, 0), 0);
+    // reactors
+    shipTemplates[0].emplace_back(shipParts[3][0], ScaledCoords(3, 1), 0);
+    shipTemplates[0].emplace_back(shipParts[3][0], ScaledCoords(3, 2), 0);
+    // engines
+    shipTemplates[0].emplace_back(shipParts[2][0], ScaledCoords(2, 1), 2);
+    shipTemplates[0].emplace_back(shipParts[2][0], ScaledCoords(4, 1), 2);
+    shipTemplates[0].emplace_back(shipParts[2][0], ScaledCoords(1, 3), 1);
+    shipTemplates[0].emplace_back(shipParts[2][0], ScaledCoords(5, 3), 3);
+    shipTemplates[0].emplace_back(shipParts[2][0], ScaledCoords(2, 4), 0);
+    shipTemplates[0].emplace_back(shipParts[2][0], ScaledCoords(3, 4), 0);
+    shipTemplates[0].emplace_back(shipParts[2][0], ScaledCoords(4, 4), 0);
+    // weapons
+    shipTemplates[0].emplace_back(shipParts[4][0], ScaledCoords(1, 1), 0);
+    shipTemplates[0].emplace_back(shipParts[4][1], ScaledCoords(5, 1), 0);
+    // structural
+    shipTemplates[0].emplace_back(shipParts[0][0], ScaledCoords(2, 2), 0);
+    shipTemplates[0].emplace_back(shipParts[0][8], ScaledCoords(1, 2), 2);
+    shipTemplates[0].emplace_back(shipParts[0][0], ScaledCoords(4, 2), 0);
+    shipTemplates[0].emplace_back(shipParts[0][6], ScaledCoords(5, 2), 2);
+    shipTemplates[0].emplace_back(shipParts[0][0], ScaledCoords(2, 3), 0);
+    shipTemplates[0].emplace_back(shipParts[0][0], ScaledCoords(3, 3), 0);
+    shipTemplates[0].emplace_back(shipParts[0][0], ScaledCoords(4, 3), 0);
+    shipTemplates[0].emplace_back(shipParts[0][7], ScaledCoords(5, 4), 1);
+    shipTemplates[0].emplace_back(shipParts[0][4], ScaledCoords(1, 4), 3);
 }
 
 std::array <Texturable, 4> asteroidTextures;
 
 #define ASTEROID_SAFE_AREA_SIZE 800
-#define ASTEROID_AREA_SIZE 5000
+#define ASTEROID_AREA_SIZE 8000
 #define ASTEROID_MIN_SCALE 6
 #define ASTEROID_MAX_SCALE 24
 
@@ -110,6 +148,8 @@ DataContainer LoadGame(){
     if (setting::Resolution().x > 1280 and setting::Resolution().y > 720) {
         setting::editorScale = 1.5f * float(setting::Resolution().x) / 1280.f;
     }
+
+    LoadShipTemplates();
     
     return data;
 }

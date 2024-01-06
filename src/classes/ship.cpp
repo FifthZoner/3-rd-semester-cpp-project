@@ -11,6 +11,8 @@
 #include "logicLoop.hpp"
 #include <cmath>
 
+unsigned int Ship::ids = 1;
+
 void CheckShipConnection(std::vector <std::vector <uint8_t>>& checkArray, unsigned int x, unsigned int y) {
     // 2 is the value of checked
     checkArray[x][y] = 2;
@@ -213,7 +215,7 @@ void Ship::HandleUserInput() {
             angle += rotation * 0.017452778f;
             offset.x = std::sin(angle) * distance;
             offset.y = -std::cos(angle) * distance;
-            AddProjectile(offset + coords, rotation, n.partPointer);
+            AddProjectile(offset + coords, rotation, n.partPointer, id);
             n.reloadLeft = n.partPointer->getReloadTime();
         }
     }
@@ -235,6 +237,9 @@ void Ship::HandleAITick() {
 }
 
 Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
+
+    id = ids;
+    ids++;
 
     sf::Vector2i lower = {100000, 100000};
     sf::Vector2i upper = {0, 0};
@@ -327,6 +332,8 @@ Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
     }
     maxHealth = health;
 
+    healthBar = HealthBar(collisionRadius + 64);
+
     //std::cout << "Created a ship with accelerations: " << accelerationFront << " " << accelerationRight << " " << accelerationBack << " " << accelerationLeft << "\n";
     //std::cout << "Mass: " << weight << "\n";
     //std::cout << "Power: " << power << "\n";
@@ -343,6 +350,7 @@ void Ship::draw(sf::RenderWindow& target) {
     for (auto& n : partSprites) {
         target.draw(n);
     }
+    healthBar.draw(target, coords, ships.front().rotation, health, maxHealth);
     shipDrawLock = false;
 }
 
@@ -354,6 +362,7 @@ void Ship::draw(sf::RenderTexture& target) {
     for (auto& n : partSprites) {
         target.draw(n);
     }
+    healthBar.draw(target, coords, ships.front().rotation, health, maxHealth);
     shipDrawLock = false;
 }
 

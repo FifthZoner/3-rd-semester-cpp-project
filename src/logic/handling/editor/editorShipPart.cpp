@@ -2,7 +2,7 @@
 #include "editorShipPart.hpp"
 #include "../../graphics/elements/editorRender.hpp"
 
-EditorShipPart::EditorShipPart(ShipPart* part, sf::Vector2f position) {
+EditorShipPart::EditorShipPart(ShipPart* part, sf::Vector2f position, unsigned int rotation) {
 
     part->setSprite(sprite);
     partPointer = part;
@@ -61,6 +61,7 @@ EditorShipPart::EditorShipPart(ShipPart* part, sf::Vector2f position) {
     points[2].setOrigin(points[2].getLocalBounds().width / 2, points[2].getLocalBounds().height / 2 - sprite.getLocalBounds().height);
     points[3].setOrigin(points[3].getLocalBounds().width / 2 + sprite.getLocalBounds().width, points[3].getLocalBounds().height / 2);
     move(position, true);
+    rotate(rotation);
 }
 
 void EditorShipPart::move(sf::Vector2f position, bool snap) {

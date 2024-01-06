@@ -6,7 +6,7 @@
 
 #define MAX_PROJECTILE_DISTANCE 5000.f
 
-Projectile::Projectile(sf::Vector2f position, float rotation, ShipWeapon* origin) {
+Projectile::Projectile(sf::Vector2f position, float rotation, ShipWeapon* origin, unsigned int shipId) {
     origin->getProjectile().setSprite(sprite);
     speed = sf::Vector2f(origin->getProjectileSpeed() * std::sin(rotation * 0.017452778f), -origin->getProjectileSpeed() * std::cos(rotation * 0.017452778f)) / 60.f;
     sprite.setScale(origin->getProjectileScale(), origin->getProjectileScale());
@@ -16,6 +16,7 @@ Projectile::Projectile(sf::Vector2f position, float rotation, ShipWeapon* origin
     startingPoint = position;
     radius = origin->getProjectileWidth() / 2;
     damage = origin->getProjectileDamage();
+    this->origin = shipId;
 }
 
 // returns true if it needs to be deleted
@@ -32,13 +33,13 @@ bool Projectile::handleTick() {
     return false;
 }
 
-void AddProjectile(sf::Vector2f position, float rotation, ShipWeapon* origin) {
+void AddProjectile(sf::Vector2f position, float rotation, ShipWeapon* origin, unsigned int id) {
     while (gameplayProjectileLock){
         sf::sleep(sf::microseconds(10));
     }
     gameplayProjectileLock = true;
 
-    projectiles.emplace_back(position, rotation, origin);
+    projectiles.emplace_back(position, rotation, origin, id);
 
     gameplayProjectileLock = false;
 }

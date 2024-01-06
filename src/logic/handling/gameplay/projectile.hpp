@@ -11,15 +11,16 @@ struct Projectile {
     sf::Sprite sprite;
     sf::Vector2f startingPoint = {0.f, 0.f};
     sf::Vector2f speed = {0.f, 0.f};
+    unsigned int origin = 0;
 
-    Projectile(sf::Vector2f position, float rotation, ShipWeapon* origin);
+    Projectile(sf::Vector2f position, float rotation, ShipWeapon* origin, unsigned int shipId);
     // returns true if it needs to be deleted
     bool handleTick();
 };
 
 inline std::vector <Projectile> projectiles;
 
-void AddProjectile(sf::Vector2f position, float rotation, ShipWeapon* origin);
+void AddProjectile(sf::Vector2f position, float rotation, ShipWeapon* origin, unsigned int id);
 void HandleProjectiles();
 
 #endif //INC_3_RD_SEMESTER_CPP_PROJECT_PROJECTILE_HPP

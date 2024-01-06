@@ -5,6 +5,7 @@
 
 #include "parts.hpp"
 #include "editorShipPart.hpp"
+#include "healthBar.hpp"
 
 struct Ship {
     struct WeaponContainer {
@@ -32,6 +33,9 @@ struct Ship {
     float collisionRadius = 0.f;
     sf::Vector2f coords = {0, 0};
     float rotation = 0.f;
+    unsigned int id = 0;
+    static unsigned int ids;
+    HealthBar healthBar;
 
     volatile bool shipDrawLock = false;
 

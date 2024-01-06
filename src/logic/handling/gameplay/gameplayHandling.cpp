@@ -3,8 +3,14 @@
 #include "ship.hpp"
 #include "projectile.hpp"
 #include "collision.hpp"
+#include "loading.hpp"
 
 #include <queue>
+#include <iostream>
+
+void addEnemyShip() {
+    Ship::createShip(shipTemplates[0], {300, 300});
+}
 
 void HandleGameplay() {
 
@@ -15,6 +21,10 @@ void HandleGameplay() {
     HandleCollisions();
 
     while (!events.empty()){
+
+        if (events.front().type == sf::Event::TextEntered and events.front().text.unicode == 'n') {
+            addEnemyShip();
+        }
 
         events.pop();
     }

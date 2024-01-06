@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../classes/part.hpp"
+#include "editorShipPart.hpp"
 
 struct DataContainer{
 
@@ -13,5 +14,7 @@ struct DataContainer{
 };
 
 DataContainer LoadGame();
+
+inline std::vector <std::vector <ShipPart*>> shipParts;
 
 #endif

@@ -66,8 +66,6 @@ void HandleEditorReleased() {
                         sf::sleep(sf::microseconds(10));
                     }
                     editorElementLock = true;
-                    gameplayCameraPosition = &ships.front().coords;
-                    gameplayCameraRotation = &ships.front().rotation;
                     logicVector.clear();
                     logicVector.emplace_back(LogicStage::game, false);
                     renderVector.clear();

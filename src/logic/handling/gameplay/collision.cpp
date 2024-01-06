@@ -60,8 +60,10 @@ void HandleCollisions() {
             if (DoesCollide(ships[n], ships[m])) {
                 // damage and bounce back
 
+                int damage = 0;
+
                 // first ship
-                {
+                if (ships[n].speed != sf::Vector2f(0, 0)) {
                     sf::Vector2f i = ships[m].coords - ships[n].coords;
                     float betaPlusGamma = std::asin(i.x / std::sqrt(i.x * i.x + i.y * i.y));
                     if (i.y > 0.f) {
@@ -80,10 +82,12 @@ void HandleCollisions() {
                     ships[n].setPosition(ships[n].coords);
 
                     DealDamageToShip(int(std::floor(impactSpeed / 50.f)), n);
+
+                    damage += int(std::floor(impactSpeed / 50.f));
                 }
 
                 // second ship
-                {
+                if (ships[m].speed != sf::Vector2f(0, 0)) {
                     sf::Vector2f i = ships[n].coords - ships[m].coords;
                     float betaPlusGamma = std::asin(i.x / std::sqrt(i.x * i.x + i.y * i.y));
                     if (i.y > 0.f) {
@@ -101,8 +105,10 @@ void HandleCollisions() {
                     ships[m].coords = ships[m].coords - (sf::Vector2f(std::sin(betaPlusGamma), -std::cos(betaPlusGamma)) * 5.f);
                     ships[m].setPosition(ships[m].coords);
 
-                    DealDamageToShip(int(std::floor(impactSpeed / 50.f)), m);
+                    damage += int(std::floor(impactSpeed / 50.f));
                 }
+                DealDamageToShip(damage, m);
+                DealDamageToShip(damage, n);
             }
         }
     }
@@ -112,7 +118,7 @@ void HandleCollisions() {
         bool isDeleted = false;
 
         for (unsigned int m = 0; m < ships.size(); m++) {
-            if (DoesCollide(projectiles[n], ships[m])) {
+            if (ships[m].id != projectiles[n].origin and DoesCollide(projectiles[n], ships[m])) {
                 // damage
                 DealDamageToShip(projectiles[n].damage, m);
 
