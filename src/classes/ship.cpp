@@ -133,9 +133,9 @@ bool IsShipValid (std::vector <EditorShipPart>& parts) {
 bool Ship::createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
 
     // Will be removed after ship creation testing
-    //if (!IsShipValid(parts)) {
-    //    return false;
-    //}
+    if (!IsShipValid(parts)) {
+        return false;
+    }
 
     while (editorElementLock){
         sf::sleep(sf::microseconds(10));
@@ -550,7 +550,7 @@ void Ship::setRotation(float rotation) {
 }
 
 void DealDamageToShip(int damage, unsigned int index) {
-    std::cout << damage << " given to ship with health of " << ships[index].health << " / " << ships[index].maxHealth << "\n";
+    //std::cout << damage << " given to ship with health of " << ships[index].health << " / " << ships[index].maxHealth << "\n";
 
     ships[index].health -= damage;
     if (ships[index].health <= 0) {
