@@ -14,7 +14,11 @@ void addEnemyShip() {
 
 void HandleGameplay() {
 
-    ships.front().HandleUserInput();
+    ships.front().handleUserInput();
+
+    for (unsigned int n = 1; n < ships.size() ;n++) {
+        ships[n].handleAITick();
+    }
 
     HandleProjectiles();
 

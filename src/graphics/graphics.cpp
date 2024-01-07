@@ -36,7 +36,8 @@ void PrepareGraphics(){
     view.setCenter(sf::Vector2f(setting::Resolution()) / 2.f);
     backgroundTexture.loadFromFile("data/textures/spaceBackground.jpg");
     backgroundSprite.setTexture(backgroundTexture);
-    backgroundSprite.setOrigin(backgroundSprite.getGlobalBounds().getSize() / 2.f);
+    backgroundSprite.setScale(2.5f, 2.5f);
+    backgroundSprite.setOrigin(backgroundSprite.getLocalBounds().getSize() / 2.f);
 
 }
 
@@ -89,11 +90,13 @@ void Render(){
         view.setCenter(ships.front().coords);
         view.setRotation(ships.front().rotation);
         backgroundSprite.setPosition(ships.front().coords);
+        view.setSize(sf::Vector2f(setting::Resolution()) * 2.f);
     }
     else {
         view.setCenter(sf::Vector2f(setting::Resolution()) / 2.f);
         backgroundSprite.setPosition(sf::Vector2f(setting::Resolution()) / 2.f);
         view.setRotation(0);
+        view.setSize(sf::Vector2f(setting::Resolution()) * 1.f);
     }
 
     // off for testing

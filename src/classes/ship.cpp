@@ -155,7 +155,7 @@ bool Ship::createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position
 #define MAX_SHIP_ROTATION_SPEED 2.4f
 #define MAX_SHIP_VELOCITY 600.f
 
-void Ship::HandleUserInput() {
+void Ship::handleUserInput() {
 
     sf::Vector2f tempSpeed = speed;
 
@@ -194,8 +194,7 @@ void Ship::HandleUserInput() {
         angularSpeed = -MAX_SHIP_ROTATION_SPEED;
     }
     coords = coords + speed / 60.f;
-    rotation += angularSpeed;
-    rotation = std::fmod(rotation, 360.f);
+    rotation = std::fmod(rotation + angularSpeed, 360.f);
     setRotation(rotation);
     setPosition(coords);
 
@@ -232,8 +231,169 @@ void Ship::HandleUserInput() {
     }
 }
 
-void Ship::HandleAITick() {
+#define AI_SLOW_ANGLE 0.6f
+#define AI_SLOW_SPEED 0.6f
+#define AI_STOP_ANGLE 0.05f
+#define AI_SAFE_DISTANCE 800.f
+#define AI_PANIC_DISTANCE 300.f
+#define AI_CRUISING_SPEED 600.f
+#define AI_SAFE_DISTANCE_SPEED 150.f
 
+void Ship::handleAITick() {
+
+    // rotating towards player
+
+    // get angle to player in radians
+    float angle = GetRotationRelativeRadians(coords, ships.front().coords) - (rotation * 0.017452778f);
+    if (angle > 3.1415f) {
+        angle -= 2.f * 3.1415f;
+    }
+    // if below slow angle slow down to the slow speed
+    if (std::abs(angle) < AI_SLOW_ANGLE) {
+
+        // if below stop angle slow down to a stop
+        if (std::abs(angle) < AI_STOP_ANGLE) {
+            if (angularSpeed > 0) {
+                angularSpeed -= accelerationRotation * 100.f;
+            }
+            else if (angularSpeed < 0) {
+                angularSpeed += accelerationRotation * 100.f;
+            }
+        }
+        else if (angularSpeed > AI_SLOW_SPEED) {
+            angularSpeed -= accelerationRotation * 100.f;
+        }
+        else if (angularSpeed < -AI_SLOW_SPEED) {
+            angularSpeed += accelerationRotation * 100.f;
+        }
+        else {
+            if (angle < 0) {
+                angularSpeed -= accelerationRotation * 100.f;
+            }
+            else if (angle > 0) {
+                angularSpeed += accelerationRotation * 100.f;
+            }
+        }
+    }
+    // if above accelerate full speed towards player
+    else {
+        if (angle > 0) {
+            if (angularSpeed < MAX_SHIP_ROTATION_SPEED) {
+                angularSpeed += accelerationRotation * 100.f;
+            }
+        }
+        else {
+            if (angularSpeed > -MAX_SHIP_ROTATION_SPEED) {
+                angularSpeed -= accelerationRotation * 100.f;
+            }
+        }
+    }
+
+    bool isPanicking = false;
+
+    // moving towards player with asteroid avoidance
+    for (auto& n : asteroids) {
+        float distance = GetDistance(coords, n.getPosition());
+        if (distance < AI_SAFE_DISTANCE + (n.getLocalBounds().width / 2)) {
+            isPanicking = true;
+            if (distance < AI_PANIC_DISTANCE + (n.getLocalBounds().width / 2)) {
+                auto vec = GetRelativeVectorNormalized(*this, n.getPosition());
+                if (GetDistance(vec, {0.f, 0.f}) > -AI_CRUISING_SPEED) {
+                    speed -= vec * accelerationAverage;
+                    continue;
+                }
+            }
+            auto vec = GetRelativeVectorNormalized(*this, n.getPosition());
+            if (GetDistance(vec, {0.f, 0.f}) > AI_SAFE_DISTANCE_SPEED) {
+                speed -= vec * accelerationAverage;
+                continue;
+            }
+        }
+    }
+
+    if (!isPanicking) {
+        // moving towards player
+        float distance = GetDistance(coords, ships.front().coords);
+        //std::cout << distance << " is the distance\n";
+        if (distance < AI_SAFE_DISTANCE + ships.front().collisionRadius) {
+            if (distance < AI_PANIC_DISTANCE + ships.front().collisionRadius) {
+                //std::cout << "PANIC!\n";
+                auto vec = GetRelativeVectorNormalized(*this, ships.front().coords);
+                if (GetDistance(vec, {0.f, 0.f}) > -AI_CRUISING_SPEED) {
+                    speed -= vec * accelerationAverage;
+                    //std::cout << "Change by: " << (vec * accelerationAverage).x << " " << (vec * accelerationAverage).y << "\n";
+                }
+            }
+            else {
+                //std::cout << "SAFE!\n";
+                auto vec = GetRelativeVectorNormalized(*this, ships.front().coords);
+                if (GetDistance(vec, {0.f, 0.f}) > AI_SAFE_DISTANCE_SPEED) {
+                    speed -= vec * accelerationAverage * 2.f;
+                    //std::cout << "Change by: " << (vec * accelerationAverage).x << " " << (vec * accelerationAverage).y << "\n";
+                }
+            }
+        }
+        else {
+            //std::cout << "NORMAL!\n";
+            if (distance > AI_SAFE_DISTANCE + ships.front().collisionRadius + 400.f) {
+                auto vec = GetRelativeVectorNormalized(*this, ships.front().coords);
+                speed += vec * accelerationAverage;
+                //std::cout << "Change by: " << (vec * accelerationAverage).x << " " << (vec * accelerationAverage).y << "\n";
+            }
+        }
+    }
+
+    // avoiding other ships since this can happen
+    for (unsigned int n = 1; n < ships.size(); n++) {
+        if (ships[n].id != id) {
+            float distance = GetDistance(coords, ships[n].coords);
+            if (distance < AI_SAFE_DISTANCE + ships[n].collisionRadius) {
+                if (distance < AI_PANIC_DISTANCE + ships[n].collisionRadius) {
+                    auto vec = GetRelativeVectorNormalized(*this, ships[n].coords);
+                    if (GetDistance(vec, {0.f, 0.f}) > -AI_CRUISING_SPEED) {
+                        speed -= vec * accelerationAverage;
+                    }
+                }
+                else {
+                    auto vec = GetRelativeVectorNormalized(*this, ships[n].coords);
+                    if (GetDistance(vec, {0.f, 0.f}) > AI_SAFE_DISTANCE_SPEED) {
+                        speed -= vec * accelerationAverage;
+                    }
+                }
+            }
+        }
+    }
+
+    if (GetDistance(speed, {0.f, 0.f}) > AI_CRUISING_SPEED) {
+        speed *= AI_CRUISING_SPEED / GetDistance(speed, {0.f, 0.f});
+    }
+
+    // shooting
+    for (auto& n : weapons) {
+        if (n.reloadLeft > 0) {
+            n.reloadLeft--;
+        }
+        else if (std::abs(angle) < AI_STOP_ANGLE){
+            // shoott
+            sf::Vector2f offset = n.spritePointer->getOrigin() - sf::Vector2f(16.f, 16.f);
+            float distance = GetDistance(offset, {0.f,0.f});
+            float angle = std::asin(-offset.x / distance);
+            if (offset.y < 0.f) {
+                angle = 3.1415f - angle;
+            }
+            angle += rotation * 0.017452778f;
+            offset.x = std::sin(angle) * distance;
+            offset.y = -std::cos(angle) * distance;
+            AddProjectile(offset + coords, rotation, n.partPointer, id);
+            n.reloadLeft = n.partPointer->getReloadTime();
+        }
+    }
+
+
+    coords = coords + (speed / 60.f);
+    rotation = std::fmod(rotation + angularSpeed, 360.f);
+    setRotation(rotation);
+    setPosition(coords);
 }
 
 Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
@@ -322,6 +482,7 @@ Ship::Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position) {
     accelerationRight = thrustRight / float(weight) * 1000.f;
     accelerationBack = thrustBack / float(weight) * 1000.f;
     accelerationLeft = thrustLeft / float(weight) * 1000.f;
+    accelerationAverage = (accelerationFront + accelerationRight + accelerationBack + accelerationLeft) / 12.f;
     accelerationRotation = float(power - drain) / float(power) / 1000.f;
     this->coords = position;
     if (width.x > width.y) {
@@ -389,7 +550,7 @@ void Ship::setRotation(float rotation) {
 }
 
 void DealDamageToShip(int damage, unsigned int index) {
-    //std::cout << damage << " given to ship with health of " << ships[index].health << " / " << ships[index].maxHealth << "\n";
+    std::cout << damage << " given to ship with health of " << ships[index].health << " / " << ships[index].maxHealth << "\n";
 
     ships[index].health -= damage;
     if (ships[index].health <= 0) {

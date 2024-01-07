@@ -27,6 +27,7 @@ struct Ship {
     float accelerationBack = 0.f;
     float accelerationRight = 0.f;
     float accelerationLeft = 0.f;
+    float accelerationAverage = 0.f;
     float accelerationRotation = 0.f;
     sf::Vector2f speed = {0.f, 0.f};
     float angularSpeed = 0.f;
@@ -40,8 +41,8 @@ struct Ship {
     volatile bool shipDrawLock = false;
 
     static bool createShip(std::vector <EditorShipPart>& parts, sf::Vector2f position);
-    void HandleUserInput();
-    void HandleAITick();
+    void handleUserInput();
+    void handleAITick();
     Ship(std::vector <EditorShipPart>& parts, sf::Vector2f position);
     void draw(sf::RenderTexture& target);
     void draw(sf::RenderWindow& target);
